@@ -14,6 +14,7 @@ if($status == ""){
 $query = $pdo->query("SELECT * from $tabela $sql_status order by id desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $linhas = @count($res);
+
 if($linhas > 0){
 echo <<<HTML
 <small>
@@ -66,10 +67,8 @@ for($i=0; $i<$linhas; $i++){
 	$status_cliente = @$res[$i]['status_cliente'];
 
 	$dados_emprestimoF = @rawurlencode($dados_emprestimo);
-
-	$data_nascF = implode('/', array_reverse(explode('-', $data_nasc)));
+	$data_nascF = @implode('/', array_reverse(explode('-', $data_nasc)));
 	$data_cadF = implode('/', array_reverse(explode('-', $data_cad)));
-
 	$tel_whatsF = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
 
 $query2 = $pdo->query("SELECT * from status_clientes where nome = '$status_cliente'");
@@ -82,7 +81,7 @@ if($cor == ""){
 }
 
 
-	//verificar total de emprestimos do cliente
+//verificar total de emprestimos do cliente
 $query2 = $pdo->query("SELECT * from emprestimos where cliente = '$id'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $total_emprestimos = @count($res2);
@@ -130,7 +129,7 @@ if($recursos == 'Empréstimos'){
 }
 
 			//extensão do arquivo
-$ext = pathinfo($comprovante_endereco, PATHINFO_EXTENSION);
+$ext = @pathinfo($comprovante_endereco, PATHINFO_EXTENSION);
 if($ext == 'pdf'){
 	$tumb_comprovante_endereco = 'pdf.png';
 }else if($ext == 'rar' || $ext == 'zip'){
@@ -141,7 +140,7 @@ if($ext == 'pdf'){
 
 
 			//extensão do arquivo
-$ext = pathinfo($comprovante_rg, PATHINFO_EXTENSION);
+$ext = @pathinfo($comprovante_rg, PATHINFO_EXTENSION);
 if($ext == 'pdf'){
 	$tumb_comprovante_rg = 'pdf.png';
 }else if($ext == 'rar' || $ext == 'zip'){
@@ -150,7 +149,7 @@ if($ext == 'pdf'){
 	$tumb_comprovante_rg = $comprovante_rg;
 }
 
-$enderecoF2 = rawurlencode($endereco);
+$enderecoF2 = @rawurlencode($endereco);
 
 echo <<<HTML
 <tr style="">
@@ -363,8 +362,9 @@ HTML;
     	$('#mensagem_whats').val('');
 
     	$('#bairro').val('');
-    	$('#cidade').val('');
-    	$('#estado').val('').change();
+    	$('#cidade').val('Manaus');
+    	$('#estado').val('AM').change();
+    	$('#grupo').val('cliente').change();
     	$('#cep').val('');
     	$('#data_emp').val('<?=$data_atual?>');
     	$('#data_cob').val('<?=$data_atual?>');

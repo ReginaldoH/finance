@@ -3,6 +3,9 @@ require_once("cabecalho.php");
 require_once("rodape.php");
 
 $data_atual = date('Y-m-d');
+$query_data_inicial = $pdo->query("SELECT MIN(data_venc) AS data_venc FROM `receber` WHERE `pago` LIKE 'Não'");
+$data_inicial = $query_data_inicial->fetchAll(PDO::FETCH_ASSOC);
+$data_inicial = date("Y-m-d", strtotime($data_inicial[0]['data_venc']));
 
 $pag = 'receber';
 $itens_pag = 10;
@@ -48,7 +51,7 @@ if (@$_POST['pago'] == "Vencidas") {
 }
 
 if ($dataInicial == "") {
-  $dataInicial = $data_atual;
+  $dataInicial = $data_inicial;
 }
 
 if ($dataFinal == "") {
@@ -69,9 +72,9 @@ $valor_pagoF = 0;
 
 //totalizar páginas
 if ($pago == 'Vencidas') {
-  $query2 = $pdo->query("SELECT * from $pag where data_venc < curDate() and pago != 'Sim' order by id desc");
+  $query2 = $pdo->query("SELECT * from $pag where data_venc < curDate() and pago != 'Sim' order by data_venc desc");
 } else {
-  $query2 = $pdo->query("SELECT * from $pag where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '%$pago%' order by id desc");
+  $query2 = $pdo->query("SELECT * from $pag where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '%$pago%' order by data_venc desc");
 }
 
 
@@ -109,15 +112,15 @@ if ($pag_proxima == $num_paginas) {
         <div class="tabs tabs-pill" id="tab-group-2">
           <div class="tab-controls rounded-m p-1">
             <a class="font-12 rounded-m tabradio" data-bs-toggle="collapse" href="#tab-4"
-              aria-expanded="<?php echo $checked_todas ?>" name="tabs" id="tabone" onclick="buscar('')">Todas</a>
-            <a class="font-12 rounded-m tabradio" data-bs-toggle="collapse" href="#tab-5"
-              aria-expanded="<?php echo $checked_pagas ?>" name="tabs" id="tabtwo" onclick="buscar('Sim')">Pagas</a>
+            aria-expanded="<?php echo $checked_todas ?>" name="tabs" id="tabone" onclick="buscar('')">Todas</a>
             <a class="font-12 rounded-m tabradio" data-bs-toggle="collapse" href="#tab-x"
-              aria-expanded="<?php echo $checked_pendentes ?>" name="tabs" id="tabthree"
-              onclick="buscar('Não')">Pedentes</a>
+            aria-expanded="<?php echo $checked_pendentes ?>" name="tabs" id="tabthree"
+            onclick="buscar('Não')">Pedentes</a>
             <a class="font-12 rounded-m tabradio" data-bs-toggle="collapse" href="#tab-6"
-              aria-expanded="<?php echo $checked_vencidas ?>" name="tabs" id="tab4"
-              onclick="buscar('Vencidas')">Vencidas</a>
+            aria-expanded="<?php echo $checked_vencidas ?>" name="tabs" id="tab4"
+            onclick="buscar('Vencidas')">Vencidas</a>
+            <a class="font-12 rounded-m tabradio" data-bs-toggle="collapse" href="#tab-5"
+            aria-expanded="<?php echo $checked_pagas ?>" name="tabs" id="tabtwo" onclick="buscar('Sim')">Pagas</a>
           </div>
           <div class="mt-3"></div>
           <div class="collapse show tab ocultar" id="tab-4" data-bs-parent="#tab-group-2">
@@ -154,9 +157,9 @@ if ($pag_proxima == $num_paginas) {
     <div class="content">
       <?php
       if ($pago == 'Vencidas') {
-        $query = $pdo->query("SELECT * from $pag where data_venc < curDate() and pago != 'Sim' order by id desc");
+        $query = $pdo->query("SELECT * from $pag where data_venc < curDate() and pago != 'Sim' order by data_venc desc");
       } else {
-        $query = $pdo->query("SELECT * from $pag where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '%$pago%' order by id desc ");
+        $query = $pdo->query("SELECT * from $pag where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '%$pago%' order by data_venc desc ");
       }
       $valor_pago = 0;
       $valor_pendentes = 0;

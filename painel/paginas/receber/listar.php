@@ -2,18 +2,28 @@
 $tabela = 'receber';
 require_once("../../../conexao.php");
 $data_atual = date('Y-m-d');
+$query_data_inicial = $pdo->query("SELECT MIN(data_venc) AS data_venc FROM `receber` WHERE `pago` LIKE 'Não'");
+$data_inicial = $query_data_inicial->fetchAll(PDO::FETCH_ASSOC);
+$data_inicial = date("Y-m-d", strtotime($data_inicial[0]['data_venc']));
 
 $dataInicial = @$_POST['p1'];
 $dataFinal = @$_POST['p2'];
+if(@$_POST['p3'] == ""){
+	$_POST['p3'] = 'Não';
+}
 $status = '%'.@$_POST['p3'].'%';
 $data_buscar = @$_POST['p4'];
+
+if($_POST['p3'] == "Todas"){
+	$status = '%%';
+}
 
 if($data_buscar == ""){
 	$data_buscar = 'data_venc';
 }
 
 if($dataInicial == ""){
-	$dataInicial = $data_atual;
+	$dataInicial = $data_inicial;
 }
 
 if($dataFinal == ""){
@@ -25,7 +35,7 @@ $valor_pendentes = 0;
 $valor_pago = 0;
 $valor_pendentesF = 0;
 $valor_pagoF = 0;
-$query = $pdo->query("SELECT * from $tabela where $data_buscar >= '$dataInicial' and $data_buscar <= '$dataFinal' and pago LIKE '$status' order by id desc");
+$query = $pdo->query("SELECT * from $tabela where $data_buscar >= '$dataInicial' and $data_buscar <= '$dataFinal' and pago LIKE '$status' order by data_venc desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $linhas = @count($res);
 if($linhas > 0){

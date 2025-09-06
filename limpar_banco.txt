@@ -1,0 +1,82 @@
+TRUNCATE `arquivos`;
+TRUNCATE `clientes`;
+TRUNCATE `cobrancas`;
+TRUNCATE `emprestimos`;
+TRUNCATE `pagar`;
+TRUNCATE `receber`;
+TRUNCATE `solicitar_emprestimo`;
+
+CHECK TABLE `acessos`, `arquivos`, `clientes`, `cobrancas`, `config`, `dispositivos`, `emprestimos`, `feriados`, `formas_pgto`, `frequencias`, `grupo_acessos`, `pagar`, `receber`, `solicitar_emprestimo`, `status_clientes`, `usuarios`, `usuarios_permissoes`;
+
+
+OPTIMIZE TABLE `acessos`, `arquivos`, `clientes`, `cobrancas`, `config`, `dispositivos`, `emprestimos`, `feriados`, `formas_pgto`, `frequencias`, `grupo_acessos`, `pagar`, `receber`, `solicitar_emprestimo`, `status_clientes`, `usuarios`, `usuarios_permissoes`;
+
+
+REPAIR TABLE `acessos`, `arquivos`, `clientes`, `cobrancas`, `config`, `dispositivos`, `emprestimos`, `feriados`, `formas_pgto`, `frequencias`, `grupo_acessos`, `pagar`, `receber`, `solicitar_emprestimo`, `status_clientes`, `usuarios`, `usuarios_permissoes`;
+
+
+ANALYZE TABLE `acessos`, `arquivos`, `clientes`, `cobrancas`, `config`, `dispositivos`, `emprestimos`, `feriados`, `formas_pgto`, `frequencias`, `grupo_acessos`, `pagar`, `receber`, `solicitar_emprestimo`, `status_clientes`, `usuarios`, `usuarios_permissoes`;
+
+
+
+crediseguro.com.br → transmite credibilidade (ótimo para serviços financeiros).
+
+qual seria um slogan
+O ChatGPT disse:
+
+Boa escolha 👌 crediseguro.com.br realmente passa solidez e confiança.
+Agora, o slogan precisa reforçar a ideia de segurança, agilidade e facilidade no crédito.
+
+Aqui estão algumas sugestões:
+
+🔹 Opções de Slogan para CrediSeguro
+
+“Seu crédito com segurança e confiança.”
+
+“Facilitando seu acesso ao crédito, sem complicação.”
+
+“Crédito rápido, seguro e ao seu alcance.”
+
+“A solução financeira que você pode confiar.”
+
+“CrediSeguro: mais confiança no seu futuro.”
+
+“Seu parceiro em crédito responsável.”
+
+“Transparência e segurança para suas finanças.”
+
+“Crédito fácil, confiança garantida.”
+
+“Segurança que gera oportunidades.”
+
+“CrediSeguro: crédito simples, vida tranquila.”
+
+
+
+
+Versões Melhoradas
+crediseguro.com.br → transmite credibilidade (ótimo para serviços financeiros).
+“CrediSeguro: confiança no seu futuro, rapidez no seu presente.”
+“CrediSeguro: mais confiança no seu futuro, sem sair de casa.”
+“CrediSeguro: o crédito seguro que chega até você.”
+
+
+“CrediSeguro: crédito rápido e seguro, direto do seu celular.”
+“CrediSeguro: crédito digital, seguro e imediato.”
+“CrediSeguro: confiança para o futuro, crédito rápido agora.”
+“CrediSeguro: tudo em um app, rápido e sem burocracia.”
+“CrediSeguro: crédito fácil, rápido e 100% online.”
+
+🔹 Sugestões de novos slogans para CrediSeguro Já
+crediseguroja.com.br
+“CrediSeguro Já: crédito rápido, seguro e sem sair de casa.”
+“CrediSeguro Já: confiança e agilidade em um só clique.”
+“CrediSeguro Já: seu crédito online, simples e seguro.”
+“CrediSeguro Já: o crédito confiável que chega em minutos.”
+“CrediSeguro Já: crédito imediato, com a segurança que você merece.”
+“CrediSeguro Já: rápido como você precisa, seguro como você confia.”
+“CrediSeguro Já: crédito digital, rápido e sem burocracia.”
+“CrediSeguro Já: agilidade para hoje, segurança para o futuro.”
+
+
+https://auth-db1067.hstgr.io/index.php?route=/import

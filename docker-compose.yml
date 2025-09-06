@@ -1,0 +1,40 @@
+services:
+  app:
+    build: .
+    container_name: php_app
+    ports:
+      - "2001:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: cdwq8i9o
+      MYSQL_DATABASE: rhs_finance
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3310:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: cdwq8i9o
+    ports:
+      - "2000:80"
+    depends_on:
+      - db
+
+volumes:
+  db_data:

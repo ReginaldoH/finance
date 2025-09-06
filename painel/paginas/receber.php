@@ -19,6 +19,9 @@ if($verificar_pagamentos != 'Não'){
 	}
 }
 
+$query_data_inicial = $pdo->query("SELECT MIN(data_venc) AS data_venc FROM `receber` WHERE `pago` LIKE 'Não'");
+$data_inicial = $query_data_inicial->fetchAll(PDO::FETCH_ASSOC);
+$data_inicial = date("Y-m-d", strtotime($data_inicial[0]['data_venc']));
 
  ?>
 
@@ -31,7 +34,7 @@ if($verificar_pagamentos != 'Não'){
 
 	<div class="col-md-2">
 		<i class="fa fa-calendar-o text-primary"></i>
-		<input style="width:130px; height:30px; font-size: 14px" type="date" name="dataInicial" id="dataInicial" value="<?php echo $data_atual ?>" onchange="buscar()">
+		<input style="width:130px; height:30px; font-size: 14px" type="date" name="dataInicial" id="dataInicial" value="<?php echo $data_inicial ?>" onchange="buscar()">
 	</div>
 
 	<div class="col-md-2">
@@ -41,9 +44,9 @@ if($verificar_pagamentos != 'Não'){
 
 	<div style="margin-left: 30px" class="col-md-2" align="right">		
 		<select class="form-control" id="status" onchange="buscar()">
-			<option value="">Todas as contas</option>
 			<option value="Não">Pendentes</option>
 			<option value="Sim">Pagas</option>
+			<option value="Todas">Todas as contas</option>
 		</select>
 	</div>
 

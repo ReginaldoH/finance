@@ -1,12 +1,12 @@
 <?php 
 
 //definir fuso horário
-date_default_timezone_set('America/Sao_Paulo');
+date_default_timezone_set('America/Manaus');
 
 $modo_teste = 'Não';
 
 //dados conexão bd local
-$servidor = 'localhost';
+$servidor = 'db';
 $banco = 'rhs_finance';
 $usuario = 'root';
 $senha = 'cdwq8i9o';
@@ -39,9 +39,9 @@ if($minutos_rand < 10){
 $hora_random = $hora_rand.':'.$minutos_rand.':00';
 
 //variaveis globais
-$nome_sistema = 'Nome Sistema';
-$email_sistema = 'contato@hugocursos.com.br';
-$telefone_sistema = '(31)97527-5084';
+$nome_sistema = 'RHS Finance';
+$email_sistema = 'rhscamila@gmail.com';
+$telefone_sistema = '(392)99137-5942';
 
 $query = $pdo->query("SELECT * from config");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);

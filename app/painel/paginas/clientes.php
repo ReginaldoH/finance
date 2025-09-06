@@ -1966,8 +1966,8 @@ HTML;
     $('#cpf').val('');
     $('#numero').val('');
     $('#bairro').val('');
-    $('#cidade').val('');
-    $('#estado').val('').change();
+    $('#cidade').val('Manaus');
+    $('#estado').val('AM').change();
     $('#cep').val('');
     $('#cnpj').val('');
     $('#valor').val('0,00');
@@ -1979,6 +1979,7 @@ HTML;
     $('#empresa').val('');
     $('#indicacao').val('');
     $('#complemento').val('');
+    $('#grupo').val('cliente');
 
     $('#frequencia').val('30').change();
 
