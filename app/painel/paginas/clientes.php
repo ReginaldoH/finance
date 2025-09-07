@@ -175,7 +175,7 @@ if ($pag_proxima == $num_paginas) {
 
   $dados_emprestimoF = @rawurlencode($dados_emprestimo);
 
-  $data_nascF = implode('/', array_reverse(explode('-', $data_nasc)));
+  @$data_nascF = implode('/', array_reverse(explode('-', $data_nasc)));
   $data_cadF = implode('/', array_reverse(explode('-', $data_cad)));
 
   $tel_whatsF = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
@@ -437,6 +437,7 @@ HTML;
   <i class="bi bi-telephone-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
   <input type="text" class="form-control rounded-xs ps-5" id="telefone" name="telefone" placeholder="" required>
   <label class="color-theme ps-5">Telefone</label>
+  <small class="position-absolute top-50 end-0 translate-middle-y me-3 text-danger" style="font-size: 9px;">(Obrigatório)</small>
 </div>
 
 <!-- Telefone2 -->
@@ -461,6 +462,7 @@ HTML;
   <i class="bi bi-file-earmark-person-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
   <input type="text" class="form-control rounded-xs ps-5" id="cpf" name="cpf" placeholder="" required>
   <label class="color-theme ps-5">CPF / CNPJ</label>
+  <small class="position-absolute top-50 end-0 translate-middle-y me-3 text-danger" style="font-size: 9px;">(Obrigatório)</small>
 </div>
 
 <!-- Nascimento -->

@@ -34,9 +34,9 @@
 <div id="footer-bar" class="footer-bar footer-bar-detached">
   <a class="<?php echo @$clientes ?>" href="clientes" onclick="navigateToPage(event, 'clientes')"><i class="bi bi-people-fill font-15"></i><span>Clientes</span></a>
    <?php if($recursos != "Cobranças"){ ?>
-  <a class="<?php echo @$emprestimos ?>" href="emprestimos" onclick="navigateToPage(event, 'emprestimos')"><i class="bi bi-list-task font-17"></i><span>Empréstimos</span></a>
+  <a class="<?php echo @$emprestimos ?>" href="emprestimos" onclick="navigateToPage(event, 'receber')"><i class="bi bi-currency-dollar font-17"></i><span>Receber</span></a>
 <?php }else{ ?>
-<a class="<?php echo @$cobrancas ?>" href="cobrancas" onclick="navigateToPage(event, 'cobrancas')"><i class="bi bi-list-task font-17"></i><span>Empréstimos</span></a>
+<a class="<?php echo @$cobrancas ?>" href="cobrancas" onclick="navigateToPage(event, 'cobrancas')"><i class="bi bi-currency-dollar font-17"></i><span>Empréstimos</span></a>
 <?php } ?>
   <a class="<?php echo @$home ?>" href="index" onclick="navigateToPage(event, 'index')"><i class="bi bi-house-fill font-16"></i><span>Home</span></a>
   <a class="<?php echo @$gestao_mensagens ?>" href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-gestao"><i class="bi bi-chat-dots-fill font-16"></i><span>Mensagens</span></a>

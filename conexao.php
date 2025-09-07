@@ -39,9 +39,9 @@ if($minutos_rand < 10){
 $hora_random = $hora_rand.':'.$minutos_rand.':00';
 
 //variaveis globais
-$nome_sistema = 'RHS Finance';
+$nome_sistema = 'Credi Seguro Já';
 $email_sistema = 'rhscamila@gmail.com';
-$telefone_sistema = '(392)99137-5942';
+$telefone_sistema = '(92)99137-5942';
 
 $query = $pdo->query("SELECT * from config");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);

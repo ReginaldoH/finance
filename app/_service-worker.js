@@ -1,6 +1,6 @@
 // Para limpar o cache em dispositivos, sempre aumente o número APP_VER após fazer alterações.
 // O aplicativo fornecerá conteúdo novo imediatamente ou após 2-3 atualizações (abrir/fechar)
-var APP_NAME = 'Sistema Cobranças';
+var APP_NAME = 'Credi Seguro Já';
 var APP_VER = '1.5';
 var CACHE_NAME = APP_NAME + '-' + APP_VER;
 
