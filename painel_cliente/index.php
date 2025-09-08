@@ -48,6 +48,7 @@ if($linhas > 0){
 	$cidade_usuario = $res[0]['cidade'];
 	$estado_usuario = $res[0]['estado'];
 	$cep_usuario = $res[0]['cep'];
+	$foto_usuario = $res[0]['foto'];
 
 
 
@@ -255,7 +256,7 @@ $total_cobrancas = @count($res);
 						<li class="dropdown profile_details_drop">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<div class="profile_img">	
-									<span class="prfil-img"><img src="images/perfil/sem-foto.jpg" alt="" width="50px" height="50px"> </span> 
+									<span class="prfil-img"><img src="../painel/images/clientes/<?php echo $foto_usuario ?>" alt="" width="50px" height="50px"> </span> 
 									<div class="user-name esc">
 										<p><?php echo $nome_usuario ?></p>
 										
