@@ -805,9 +805,13 @@ if($verificar_pagamentos != 'Não'){
 					</div>
 
 					<div class="row">
-						<div class="col-md-12">							
-								<label>Observações</label>
+						<div class="col-md-8">							
+								<label>Observações do empréstimo</label>
 								<input type="text" class="form-control" id="obs" name="obs" placeholder="Observações" >							
+						</div>
+						<div class="col-md-4">							
+								<label>Contato empréstimo</label>
+								<input type="text" class="form-control" id="contato" name="contato" placeholder="Contato Emprestimo" >							
 						</div>
 					</div>
 

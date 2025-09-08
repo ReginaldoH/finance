@@ -69,7 +69,7 @@ for($i=0; $i<$linhas; $i++){
 	$dados_emprestimoF = @rawurlencode($dados_emprestimo);
 	$data_nascF = @implode('/', array_reverse(explode('-', $data_nasc)));
 	$data_cadF = implode('/', array_reverse(explode('-', $data_cad)));
-	$tel_whatsF = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
+	@$tel_whatsF = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
 
 $query2 = $pdo->query("SELECT * from status_clientes where nome = '$status_cliente'");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
@@ -349,9 +349,11 @@ HTML;
 	}
 
 	function limparCampos(){
+		console.log("aqui 03");
 		$('#id').val('');
     	$('#nome').val('');
     	$('#email').val('');
+    	$('#status_cliente').val('');
     	$('#telefone').val('');
     	$('#endereco').val('');
     	$('#cpf').val('');
@@ -360,11 +362,19 @@ HTML;
     	$('#pix').val('');
     	$('#indicacao').val('');
     	$('#mensagem_whats').val('');
+		$('#endereco').val('');   
+    	$('#nome_sec').val('');  
+    	$('#telefone_sec').val('');  
+    	$('#endereco_sec').val('');  
+    	$('#grupo').val('');  
+    	$('#comprovante_endereco').val('');  
+    	$('#comprovante_rg').val('');  
+    	$('#foto').val('');  
+    	$('#grupo').val('');  
 
     	$('#bairro').val('');
     	$('#cidade').val('Manaus');
     	$('#estado').val('AM').change();
-    	$('#grupo').val('cliente').change();
     	$('#cep').val('');
     	$('#data_emp').val('<?=$data_atual?>');
     	$('#data_cob').val('<?=$data_atual?>');

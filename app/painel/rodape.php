@@ -34,7 +34,7 @@
 <div id="footer-bar" class="footer-bar footer-bar-detached">
   <a class="<?php echo @$clientes ?>" href="clientes" onclick="navigateToPage(event, 'clientes')"><i class="bi bi-people-fill font-15"></i><span>Clientes</span></a>
    <?php if($recursos != "Cobranças"){ ?>
-  <a class="<?php echo @$emprestimos ?>" href="emprestimos" onclick="navigateToPage(event, 'receber')"><i class="bi bi-currency-dollar font-17"></i><span>Receber</span></a>
+  <a class="<?php echo @$receber ?>" href="receber" onclick="navigateToPage(event, 'receber')"><i class="bi bi-currency-dollar font-17"></i><span>Receber</span></a>
 <?php }else{ ?>
 <a class="<?php echo @$cobrancas ?>" href="cobrancas" onclick="navigateToPage(event, 'cobrancas')"><i class="bi bi-currency-dollar font-17"></i><span>Empréstimos</span></a>
 <?php } ?>

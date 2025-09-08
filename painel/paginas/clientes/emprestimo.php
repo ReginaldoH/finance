@@ -19,6 +19,8 @@ $juros = str_replace(',', '.', $juros);
 $juros_emp = $_POST['juros_emp'];
 $juros_emp = str_replace(',', '.', $juros_emp);
 $obs = $_POST['obs'];
+$contato = $_POST['contato'];
+
 $data_venc = $_POST['data_venc'];
 $id = $_POST['id'];
 $dias_frequencia = $_POST['frequencia'];
@@ -47,12 +49,13 @@ $frequencia = $res[0]['frequencia'];
 $valor_parcela = $valor / $parcelas;
 
 
-$query = $pdo->prepare("INSERT INTO $tabela SET cliente = '$id', valor = :valor, parcelas = :parcelas, juros = :juros, multa = :multa, data = '$data', usuario = '$id_usuario', obs = :obs, juros_emp = :juros_emp, data_venc = :data_venc, frequencia = '$frequencia', tipo_juros = '$tipo_juros' ");
+$query = $pdo->prepare("INSERT INTO $tabela SET cliente = '$id', valor = :valor, parcelas = :parcelas, juros = :juros, multa = :multa, data = '$data', usuario = '$id_usuario', contato = :contato, obs = :obs, juros_emp = :juros_emp, data_venc = :data_venc, frequencia = '$frequencia', tipo_juros = '$tipo_juros' ");
 
 $query->bindValue(":valor", "$valor");
 $query->bindValue(":parcelas", "$parcelas");
 $query->bindValue(":juros", "$juros");
 $query->bindValue(":multa", "$multa");
+$query->bindValue(":contato", "$contato");
 $query->bindValue(":obs", "$obs");
 $query->bindValue(":juros_emp", "$juros_emp");
 $query->bindValue(":data_venc", "$data_venc");
@@ -78,113 +81,118 @@ $valor_total_juros = 0;
 $valor_parcelas_soma = 0;
 //lançar as contas a receber (parcelas do pagamento)
 for($i=1; $i <= $parcelas; $i++){
-$descricao = $nome_cliente.' ('.$i.')';
+	if ( strlen($_POST['contato']) == 0) {
+		$contato = '';
+	} else {
+		$contato = '/'.$_POST['contato'];
+	}
+	$descricao = $nome_cliente.$contato.' ('.$i.')';
 
-//calculo dos juros 
-$valor_sem_juros = $valor_parcela;
+	//calculo dos juros 
+	$valor_sem_juros = $valor_parcela;
 
-//juros padrão
-if($tipo_juros == 'Padrão'){
-	$valor_parcela_final = $valor_parcela + ($valor_parcela * $juros_emp / 100);
-}
-
-
-//juros Price JS 
-if($tipo_juros == 'Simples'){
-$valor_parcela_final = $valor_parcela + ($valor_parcela * $juros_emp / 100) * ($i);
-}
-
-//juros Composto (simples)
-if($tipo_juros == 'Composto'){
-$valor_parcela_final = $valor_parcela * (1 + ($juros_emp / 100))**$parcelas;
-}
-
-
-//juros Composto (Price JS Usado nos empréstimos bancários)
-if($tipo_juros == 'Composto_Price'){
-$valor_parcela_final = $valor * (($juros_emp / 100)*(1 + ($juros_emp / 100))**$parcelas) / ((1 + ($juros_emp / 100))**$parcelas - 1);
-}
-
-//juros Prefixado
-if($tipo_juros == 'Prefixado'){
-$valor_parcela_final = $valor_parcela + ($valor * $juros_emp / 100);
-}
-
-
-//Sem Júros
-if($tipo_juros == 'Sem Júros'){
-$valor_parcela_final = $valor_parcela;
-}
-
-
-//Sem Júros
-if($tipo_juros == 'Somente Júros'){
-	$valor_parcela_final = $valor * $juros_emp / 100;
-	$valor_sem_juros = 0;
-}
-
-
-
-if($tipo_juros == 'Simples'){
-	$valor_parcelas_soma += $valor_parcela_final;
-	$valor_total_juros = $valor_parcelas_soma - $valor;
-}else{
-	$valor_total_juros = $valor_parcela_final * $parcelas - $valor;
-}
-
-	$dias_parcela = $i - 1;
-	$dias_parcela_2 = ($i - 1) * $dias_frequencia;
-
-	if($i == 1){
-		$novo_vencimento = $data_venc;
-		if($dias_frequencia == 1){
-			$novo_vencimento = date('Y-m-d', strtotime("+1 days",strtotime($data_venc)));
-		}
-	}else{
-
-
-		if($dias_frequencia == 30 || $dias_frequencia == 31){
-			
-			$novo_vencimento = date('Y-m-d', strtotime("+$dias_parcela month",strtotime($data_venc)));
-
-		}else if($dias_frequencia == 90){ 
-			$dias_parcela = $dias_parcela * 3;
-			$novo_vencimento = date('Y-m-d', strtotime("+$dias_parcela month",strtotime($data_venc)));
-
-		}else if($dias_frequencia == 180){ 
-
-			$dias_parcela = $dias_parcela * 6;
-			$novo_vencimento = date('Y-m-d', strtotime("+$dias_parcela month",strtotime($data_venc)));
-
-		}else if($dias_frequencia == 360 || $dias_frequencia == 365){ 
-
-			$dias_parcela = $dias_parcela * 12;
-			$novo_vencimento = date('Y-m-d', strtotime("+$dias_parcela month",strtotime($data_venc)));
-
-		}else if($dias_frequencia == 15){ 
-			
-			$novo_vencimento = date('Y-m-d', strtotime("+15 days",strtotime($novo_vencimento)));
-
-		}else if($dias_frequencia == 7){ 
-			
-			$novo_vencimento = date('Y-m-d', strtotime("+7 days",strtotime($novo_vencimento)));
-
-		}else{
-			
-			$novo_vencimento = date('Y-m-d', strtotime("+1 days",strtotime($novo_vencimento)));
-		}
-
+	//juros padrão
+	if($tipo_juros == 'Padrão'){
+		$valor_parcela_final = $valor_parcela + ($valor_parcela * $juros_emp / 100);
 	}
 
-	//verificação de feriados
-	require("../../verificar_feriados.php");
-	
+
+	//juros Price JS 
+	if($tipo_juros == 'Simples'){
+	$valor_parcela_final = $valor_parcela + ($valor_parcela * $juros_emp / 100) * ($i);
+	}
+
+	//juros Composto (simples)
+	if($tipo_juros == 'Composto'){
+	$valor_parcela_final = $valor_parcela * (1 + ($juros_emp / 100))**$parcelas;
+	}
+
+
+	//juros Composto (Price JS Usado nos empréstimos bancários)
+	if($tipo_juros == 'Composto_Price'){
+	$valor_parcela_final = $valor * (($juros_emp / 100)*(1 + ($juros_emp / 100))**$parcelas) / ((1 + ($juros_emp / 100))**$parcelas - 1);
+	}
+
+	//juros Prefixado
+	if($tipo_juros == 'Prefixado'){
+	$valor_parcela_final = $valor_parcela + ($valor * $juros_emp / 100);
+	}
+
+
+	//Sem Júros
+	if($tipo_juros == 'Sem Júros'){
+	$valor_parcela_final = $valor_parcela;
+	}
+
+
+	//Sem Júros
+	if($tipo_juros == 'Somente Júros'){
+		$valor_parcela_final = $valor * $juros_emp / 100;
+		$valor_sem_juros = 0;
+	}
+
+
+
+	if($tipo_juros == 'Simples'){
+		$valor_parcelas_soma += $valor_parcela_final;
+		$valor_total_juros = $valor_parcelas_soma - $valor;
+	}else{
+		$valor_total_juros = $valor_parcela_final * $parcelas - $valor;
+	}
+
+		$dias_parcela = $i - 1;
+		$dias_parcela_2 = ($i - 1) * $dias_frequencia;
+
+		if($i == 1){
+			$novo_vencimento = $data_venc;
+			if($dias_frequencia == 1){
+				$novo_vencimento = date('Y-m-d', strtotime("+1 days",strtotime($data_venc)));
+			}
+		}else{
+
+
+			if($dias_frequencia == 30 || $dias_frequencia == 31){
+				
+				$novo_vencimento = date('Y-m-d', strtotime("+$dias_parcela month",strtotime($data_venc)));
+
+			}else if($dias_frequencia == 90){ 
+				$dias_parcela = $dias_parcela * 3;
+				$novo_vencimento = date('Y-m-d', strtotime("+$dias_parcela month",strtotime($data_venc)));
+
+			}else if($dias_frequencia == 180){ 
+
+				$dias_parcela = $dias_parcela * 6;
+				$novo_vencimento = date('Y-m-d', strtotime("+$dias_parcela month",strtotime($data_venc)));
+
+			}else if($dias_frequencia == 360 || $dias_frequencia == 365){ 
+
+				$dias_parcela = $dias_parcela * 12;
+				$novo_vencimento = date('Y-m-d', strtotime("+$dias_parcela month",strtotime($data_venc)));
+
+			}else if($dias_frequencia == 15){ 
+				
+				$novo_vencimento = date('Y-m-d', strtotime("+15 days",strtotime($novo_vencimento)));
+
+			}else if($dias_frequencia == 7){ 
+				
+				$novo_vencimento = date('Y-m-d', strtotime("+7 days",strtotime($novo_vencimento)));
+
+			}else{
+				
+				$novo_vencimento = date('Y-m-d', strtotime("+1 days",strtotime($novo_vencimento)));
+			}
+
+		}
+
+		//verificação de feriados
+		require("../../verificar_feriados.php");
 		
-	
+			
+		
 
 
-$pdo->query("INSERT INTO receber SET cliente = '$id', referencia = 'Empréstimo', id_ref = '$ult_id', valor = '$valor_parcela_final', parcela = '$i', usuario_lanc = '$id_usuario', data = curDate(), data_venc = '$novo_vencimento', pago = 'Não', descricao = '$descricao', frequencia = '$frequencia_conta', recorrencia = '$recorrencia_conta', parcela_sem_juros = '$valor_sem_juros', hora_alerta = '$hora_random' ");
-$ult_id_conta = $pdo->lastInsertId();
+	$pdo->query("INSERT INTO receber SET cliente = '$id', referencia = 'Empréstimo', id_ref = '$ult_id', valor = '$valor_parcela_final', parcela = '$i', usuario_lanc = '$id_usuario', data = curDate(), data_venc = '$novo_vencimento', pago = 'Não', descricao = '$descricao', frequencia = '$frequencia_conta', recorrencia = '$recorrencia_conta', parcela_sem_juros = '$valor_sem_juros', hora_alerta = '$hora_random' ");
+	$ult_id_conta = $pdo->lastInsertId();
 
 
 
@@ -207,7 +215,7 @@ if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 		$pcto = 'PCento';
 	}
 
-	$mensagem = '💰 *' . $nome_sistema . '*%0A';
+	$mensagem = '💰 *' . $nome_sistema .$contato. '*%0A';
 	$mensagem .= '_Novo Empréstimo_ %0A';
 	
 	$mensagem .= 'Cliente: *'.$nome_cliente.'* %0A';

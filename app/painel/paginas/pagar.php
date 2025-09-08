@@ -305,10 +305,10 @@ HTML;
       }
       ?>
 
-      <div align="right" style="font-size:13px; margin-top: 10px">
-        <span style="margin-right: 10px">Total Pendentes <span style="color:red">R$ <?php echo $total_pendentesF ?>
-          </span></span>
-        <span>Total Pago <span style="color:green">R$ <?php echo $total_pagoF ?> </span></span>
+      <div align="right" style="font-size:13px; margin-top: 15px; display: contents;">
+        <span style="margin-right: 10px">Total Pendente.: <span style="color:red">R$ <?php echo $valor_pendentesF ?>
+          </span></span><br>
+        <span>Total Pago........: <span style="color:green">R$ <?php echo $valor_pagoF ?> </span></span>
       </div>
 
       

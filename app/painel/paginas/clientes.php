@@ -905,10 +905,10 @@ HTML;
       <div class="form-floating position-relative">
         <i class="bi bi-bar-chart-line-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
         <select class="form-select rounded-xs ps-5" name="tipo_juros" id="tipo_juros">
-          <option value="Padrão">Juros Padrão (Básico)</option>
-          <option value="Simples">Juros Simples (Price JS)</option>
-          <option value="Composto_Price">Juros Composto Banco</option>
-          <option value="Composto">Juros Composto Comum</option>
+          <option disabled value="Padrão">Juros Padrão (Básico)</option>
+          <option disabled value="Simples">Juros Simples (Price JS)</option>
+          <option disabled value="Composto_Price">Juros Composto Banco</option>
+          <option disabled value="Composto">Juros Composto Comum</option>
           <option value="Prefixado">Juros Prefixados</option>
           <option value="Somente Júros">Somente Juros</option>
           <option value="Sem Júros">Sem Juros</option>
@@ -934,7 +934,15 @@ HTML;
       <div class="form-floating position-relative">
         <i class="bi bi-chat-left-text-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
         <input type="text" class="form-control rounded-xs ps-5" name="obs" placeholder="Observações">
-        <label class="color-theme ps-5">Observações</label>
+        <label class="color-theme ps-5">Observações do empréstimo</label>
+      </div>
+    </div>
+    <!-- Contato -->
+    <div class="col-12">
+      <div class="form-floating position-relative">
+        <i class="bi bi-person-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
+        <input type="text" class="form-control rounded-xs ps-5" name="contato" placeholder="Contato">
+        <label class="color-theme ps-5">Contato do empréstimo</label>
       </div>
     </div>
 
@@ -1077,7 +1085,7 @@ HTML;
       <div class="form-floating position-relative">
         <i class="bi bi-chat-left-text-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
         <input type="text" class="form-control rounded-xs ps-5"  name="obs" placeholder="Observações">
-        <label class="color-theme ps-5">Observações</label>
+        <label class="color-theme ps-5">Observações do empréstimo</label>
       </div>
     </div>
 
@@ -1994,7 +2002,7 @@ HTML;
       $('#multa').val('<?=$multa_sistema?>');
       $('#juros_emp').val('<?=$juros_emprestimo?>');
       $('#id_emp').val('');
-      $('#frequencia').val('30').change();  
+      $('#frequencia').val('30').change(); 
 
     $('#enviar_whatsapp').prop('checked', false);
 
@@ -2391,11 +2399,11 @@ function atualizarCorStatus_busca() {
       $('#nome_emprest').val(nome);     
       $('#mensagem_emp').text(''); 
       $('#frequencia').val('30').change();
-
+      
       mascara_valor('juros')
       mascara_valor('multa')
       
-      botao.click();
+      botao.click();      
   }
 
   function cobranca(id, nome){   

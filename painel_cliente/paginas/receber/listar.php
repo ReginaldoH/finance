@@ -110,7 +110,7 @@ echo <<<HTML
 </table>
 <br>
 <div align="right">
-<span style="margin-right: 20px">Total Pendentes <span style="color:red">R$ {$valor_pendentesF}</span></span>
+<span style="margin-right: 20px">Total Pendentes4 <span style="color:red">R$ {$valor_pendentesF}</span></span>
 <span style="">Total Pagas <span style="color:green">R$ {$valor_pagoF}</span></span>
 </div>
 HTML;
