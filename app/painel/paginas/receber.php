@@ -23,6 +23,12 @@ $dataInicial = @$_POST['dataInicial'];
 $dataFinal = @$_POST['dataFinal'];
 $pagina = intval(@$_POST['pagina']);
 $limite = $pagina * $itens_pag;
+$cliente = @$_POST['cliente_busca'];
+if($cliente > 0){
+  $sql_cliente = " and cliente = '$cliente' ";
+}else{
+  $sql_cliente = "";
+}
 
 $numero_pagina = $pagina + 1;
 
@@ -72,9 +78,9 @@ $valor_pagoF = 0;
 
 //totalizar páginas
 if ($pago == 'Vencidas') {
-  $query2 = $pdo->query("SELECT * from $pag where data_venc < curDate() and pago != 'Sim' order by data_venc desc");
+  $query2 = $pdo->query("SELECT * from $pag where data_venc < curDate() and pago != 'Sim' $sql_cliente order by data_venc desc");
 } else {
-  $query2 = $pdo->query("SELECT * from $pag where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '%$pago%' order by data_venc desc");
+  $query2 = $pdo->query("SELECT * from $pag where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '%$pago%' $sql_cliente order by data_venc desc");
 }
 
 
@@ -106,7 +112,7 @@ if ($pag_proxima == $num_paginas) {
       <input type="date" name="dataFinal" id="dataFinal" class="round-small form-control rounded-xs"
         value="<?php echo $dataFinal ?>" onchange="buscar('')" style="width:42%; float:right; padding: 10px" />
     </div>
-  
+      
     <div class="">
       <div class="content">
         <div class="tabs tabs-pill" id="tab-group-2">
@@ -138,7 +144,28 @@ if ($pag_proxima == $num_paginas) {
         </div>
       </div>
     </div>
-  
+    <div class="">
+      <div class="content">
+
+        <!-- Select com ícone esquerdo -->
+        <div class="form-floating flex-grow-1 position-relative">
+          <i class="bi bi-info-circle-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
+
+          <select class="sel_nulo rounded-xs ps-5 pe-5" name="cliente_busca" id="cliente_busca" onchange="$('#btn_filtrar').click()" style="width:100%;">
+            <option value="" data-cor="">Selecionar Cliente</option>
+            <?php 
+              $query = $pdo->query("SELECT * from clientes order by id asc");
+              $res = $query->fetchAll(PDO::FETCH_ASSOC);
+              $linhas = @count($res);
+              if($linhas > 0){
+                for($i=0; $i<$linhas; $i++){
+            ?>
+              <option value="<?= $res[$i]['id'] ?>" <?php if($cliente == $res[$i]['id']){ ?> selected <?php } ?> ><?= $res[$i]['nome'] ?></option>
+            <?php } } ?>
+          </select>
+        </div>
+      </div>
+    </div>
     <input type="hidden" name="pago" id="pago">
     <button id="btn_filtrar" class="limpar_botao ocultar" type="submit"></button>
   </form>
@@ -157,9 +184,9 @@ if ($pag_proxima == $num_paginas) {
     <div class="content">
       <?php
       if ($pago == 'Vencidas') {
-        $query = $pdo->query("SELECT * from $pag where data_venc < curDate() and pago != 'Sim' order by data_venc desc");
+        $query = $pdo->query("SELECT * from $pag where data_venc < curDate() and pago != 'Sim' $sql_cliente order by data_venc desc");
       } else {
-        $query = $pdo->query("SELECT * from $pag where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '%$pago%' order by data_venc desc ");
+        $query = $pdo->query("SELECT * from $pag where data_venc >= '$dataInicial' and data_venc <= '$dataFinal' and pago LIKE '%$pago%' $sql_cliente order by data_venc desc ");
       }
       $valor_pago = 0;
       $valor_pendentes = 0;
@@ -319,7 +346,8 @@ $valor_finalF = @number_format($valor_final, 2, ',', '.');
 HTML;
         }
       } else {
-        echo 'Nenhum Registro Encontrado!';
+        echo '</span style="color:red">Nenhum Registro Encontrado!</span>';
+        exit;
       }
       ?>
 
