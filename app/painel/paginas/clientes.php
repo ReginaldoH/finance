@@ -44,7 +44,7 @@ if($status_busca != ""){
 
 
 //totalizar páginas
-$query2 = $pdo->query("SELECT * from $pag  where (nome like '%$buscar%' or telefone like '%$buscar%' or email like '%$buscar%' or cpf like '%$buscar%') $sql_status order by id desc");
+$query2 = $pdo->query("SELECT * from $pag  where (nome like '%$buscar%' or telefone like '%$buscar%' or email like '%$buscar%' or cpf like '%$buscar%') $sql_status order by nome asc");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $linhas2 = @count($res2);
 
@@ -138,7 +138,7 @@ if ($pag_proxima == $num_paginas) {
         AND r.pago = 'Não' 
         AND r.vencimento < CURDATE()
      )" : "")))) .
-        " ORDER BY c.id desc LIMIT $limite, $itens_pag");
+        " ORDER BY c.nome asc LIMIT $limite, $itens_pag");
       $res = $query->fetchAll(PDO::FETCH_ASSOC);
       $linhas = @count($res);
       if ($linhas > 0) {
@@ -370,7 +370,7 @@ HTML;
 
 
 
-<!-- MODAL CADASTRO-->
+<!-- MODAL CADASTRO CLIENTES-->
 <div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:98%" id="popupForm">
   <div class="content mb-4">
     <div class="d-flex pb-2">

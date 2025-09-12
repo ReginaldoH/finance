@@ -327,7 +327,7 @@ $valor_finalF = @number_format($valor_final, 2, ',', '.');
            
           </div>
           <div class="ms-auto">
-            <a onclick="editar('{$id}','{$descricao}','{$valor}','{$data_venc}','{$obs}','{$cliente}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-twitter"><i class="fa fa-edit text-white"></i></a>
+            <a onclick="editar('{$id}','{$descricao}','{$valor_finalF}','{$data_venc}','{$obs}','{$cliente}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-twitter"><i class="fa fa-edit text-white"></i></a>
            
             <a onclick="baixarConta('{$id}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-green"><i class="bi bi-check-square-fill text-white"></i></a>
 
@@ -398,8 +398,8 @@ HTML;
 </div>
 
 
-<!-- MODAL CADASTRO-->
-<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:100%" id="popupForm">
+<!-- MODAL CADASTRO RECEBER-->
+<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:100%; margin-top: 15%;" id="popupForm">
   <div class="content mb-0">
     <div class="d-flex pb-2">
       <div class="align-self-center">

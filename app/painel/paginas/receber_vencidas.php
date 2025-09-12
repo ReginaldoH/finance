@@ -297,7 +297,7 @@ HTML;
 </div>
 
 
-<!-- MODAL CADASTRO-->
+<!-- MODAL CADASTRO RECEBER VENCIDAS-->
 <div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:100%" id="popupForm">
   <div class="content mb-0">
     <div class="d-flex pb-2">

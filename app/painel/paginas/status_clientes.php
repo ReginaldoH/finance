@@ -164,7 +164,7 @@ HTML;
 </div>
 
 
-<!-- MODAL CADASTRO-->
+<!-- MODAL CADASTRO STATUS CLIENTE-->
 <div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:50%" id="popupForm">
   <div class="content mb-0">
     <div class="d-flex pb-2">

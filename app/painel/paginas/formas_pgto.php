@@ -177,7 +177,7 @@ HTML;
 
 
 
-<!-- MODAL CADASTRO-->
+<!-- MODAL CADASTRO FORMAS DE PAGAMENTO-->
 <div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:50%" id="popupForm">
   <div class="content mb-0">
     <div class="d-flex pb-2">
