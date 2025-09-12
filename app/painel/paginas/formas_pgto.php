@@ -228,7 +228,7 @@ HTML;
 <script>
   function editar(id, nome, taxa) {
     $('#mensagem').text('');
-    $('#titulo_inserir').text('EDITAR REGISTRO');
+    $('#titulo_inserir').text('EDITAR REGISTRO FORMAS DE PAGAMENTO');
     $('#id').val(id);
     $('#nome').val(nome);
     $('#taxa').val(taxa);

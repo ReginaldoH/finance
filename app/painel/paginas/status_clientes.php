@@ -240,7 +240,7 @@ HTML;
 <script>
   function editar(id, nome, cor) {
     $('#mensagem').text('');
-    $('#titulo_inserir').text('EDITAR REGISTRO');
+    $('#titulo_inserir').text('EDITAR REGISTRO STATUS');
     $('#id').val(id);
     $('#cor').val(cor);
     $('#nome').val(nome);

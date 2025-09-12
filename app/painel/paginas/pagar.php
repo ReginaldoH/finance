@@ -545,7 +545,7 @@ HTML;
 <script>
   function editar(id, descricao, valor, data_venc, obs) {
     $('#mensagem').text('');
-    $('#titulo_inserir').text('EDITAR REGISTRO');
+    $('#titulo_inserir').text('EDITAR REGISTRO APAGAR');
     $('#id').val(id);
     $('#descricao').val(descricao);
     $('#valor').val(valor);

@@ -206,7 +206,7 @@ HTML;
 <script>
   function editar(id, data) {
     $('#mensagem').text('');
-    $('#titulo_inserir').text('EDITAR REGISTRO');
+    $('#titulo_inserir').text('EDITAR REGISTRO FERIADOS');
     $('#id').val(id);
     
     $('#data_feriado').val(data);

@@ -1837,7 +1837,7 @@ HTML;
 <script>
   function editar(id, nome, telefone, cpf, email, endereco, data_nasc, obs, pix, indicacao, bairro, cidade, estado, cep, pessoa, nome_sec, telefone_sec, endereco_sec, grupo, comprovante_endereco, comprovante_rg, telefone2, foto, status_cliente) {
     $('#mensagem').text('');
-    $('#titulo_inserir').text('EDITAR REGISTRO');
+    $('#titulo_inserir').text('EDITAR REGISTRO CLIENTES');
 
     $('#id').val(id);
       $('#nome').val(nome);

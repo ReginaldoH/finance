@@ -491,7 +491,7 @@ HTML;
 <script>
   function editar(id, nome, email, telefone, endereco, nivel, foto) {
     $('#mensagem').text('');
-    $('#titulo_inserir').text('EDITAR REGISTRO');
+    $('#titulo_inserir').text('EDITAR REGISTRO USUÁRIO');
 
 
     $('#id').val(id);

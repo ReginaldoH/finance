@@ -623,7 +623,7 @@ HTML;
 <script>
   function editar(id, descricao, valor, data_venc, obs, cliente) {
     $('#mensagem').text('');
-    $('#titulo_inserir').text('EDITAR REGISTRO');
+    $('#titulo_inserir').text('EDITAR REGISTRO RECEBER');
     $('#id').val(id);
     $('#descricao').val(descricao);
     $('#valor').val(valor);

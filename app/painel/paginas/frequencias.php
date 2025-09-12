@@ -213,7 +213,7 @@ HTML;
 <script>
   function editar(id, frequencia, dias) {
     $('#mensagem').text('');
-    $('#titulo_inserir').text('EDITAR REGISTRO');
+    $('#titulo_inserir').text('EDITAR REGISTRO FREQUENCIA');
     $('#id').val(id);
     $('#frequencia').val(frequencia);
     $('#dias').val(dias);
