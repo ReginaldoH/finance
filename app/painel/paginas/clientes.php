@@ -859,7 +859,7 @@ HTML;
     <div class="col-6">
       <div class="form-floating position-relative">
         <i class="bi bi-calendar-check-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
-        <input type="date" class="form-control rounded-xs ps-5" id="data_venc" name="data_venc" value="<?php echo $data_atual ?>">
+        <input type="date" class="form-control rounded-xs ps-5" id="data_venc" name="data_venc" value="<?php echo date('Y-m-d', strtotime($data_atual . " +1 month")) ?>">
         <label class="color-theme ps-5">Vencimento</label>
       </div>
     </div>
@@ -1213,22 +1213,22 @@ HTML;
 
         </div>
 
-          <div class="row" align="right" style="font-size: 14px">
-          <div class="col-md-12"> 
-              <span style="margin-right: 15px">
-                <input type="checkbox" class="form-checkbox" id="residuo_final" name="residuo_final" value="Sim" style="display:inline-block;">
-                <label for="residuo_final" style="display:inline-block;"><small>Resíduo Final Empréstimo</small></label>
-              </span>
-              <br>
-              <span>  
-                <input type="checkbox" class="form-checkbox" id="residuo" name="residuo" value="Sim" style="display:inline-block;">
-                <label for="residuo" style="display:inline-block;"><small>Resíduo Próxima Parcela</small></label>
-              </span>
+        <div class="row" align="light" style="font-size: 14px;">
+            <div class="col-md-12"> 
+                <span>
+                  <input type="checkbox" class="form-checkbox" id="residuo_final" name="residuo_final" value="Sim" style="display:inline-block;">
+                  <label for="residuo_final" style="display:inline-block;"><small>Resíduo Final Empréstimo</small></label>
+                </span>         
             </div>
-
-            
-          </div>
-
+        </div>
+        <div class="row" align="light" style="font-size: 14px; padding: 10px;"></div>
+            <div class="col-md-12"> 
+              <span>  
+                  <input type="checkbox" class="form-checkbox" id="residuo" name="residuo" value="Sim" style="display:inline-block;">
+                  <label for="residuo" style="display:inline-block;"><small>Resíduo Próxima Parcela</small></label>
+                </span>
+            </div>
+        </div>
 
           <button name="btn_baixar" id="btn_baixar"
             class="btn btn-full gradient-highlight rounded-xs text-uppercase font-700 w-100 btn-s mt-4 mb-3"
@@ -1994,7 +1994,7 @@ HTML;
     $('#frequencia').val('30').change();
 
     $('#data_emp').val('<?=$data_atual?>');
-      $('#data_cob').val('<?=$data_atual?>');
+    $('#data_cob').val('<?=$data_atual?>');
 
     $('#valor').val('');
       $('#parcelas').val('1');
@@ -2391,19 +2391,27 @@ function atualizarCorStatus_busca() {
 
 <script type="text/javascript">
   function emprestimo(id, nome){  
-
+  limparCampos()
   const botao = document.getElementById('btn_emprestimo');
 
       $('#titulo_emp').text('Empréstimo: '+nome);     
       $('#id_emp').val(id);    
       $('#nome_emprest').val(nome);     
+      $('#valor').val('');     
+      $('#parcelas').val('1');     
       $('#mensagem_emp').text(''); 
       $('#frequencia').val('30').change();
+      $('[name="obs"]').val(''); 
+      $('[name="contato"]').val(''); 
+      $('#enviar_whatsapp_emp').val('Sim').change();
+      $('#tipo_juros').val('Prefixado').change();
+
       
       mascara_valor('juros')
       mascara_valor('multa')
       
       botao.click();      
+
   }
 
   function cobranca(id, nome){   
