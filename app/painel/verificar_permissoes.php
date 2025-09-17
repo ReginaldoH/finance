@@ -41,6 +41,8 @@ $frequencias = 'ocultar';
 $cargos = 'ocultar';
 $formas_pgto = 'ocultar';
 
+$calendario = 'ocultar';
+
 //grupo financeiro
 $receber = 'ocultar';
 $pagar = 'ocultar';
@@ -116,6 +118,9 @@ if($total_reg > 0){
 
 		if($chave == 'formas_pgto'){
 			$formas_pgto = '';
+		}
+		if($chave == 'calendario'){
+			$calendario = '';
 		}
 
 

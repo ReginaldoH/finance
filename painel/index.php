@@ -66,6 +66,7 @@ if($linhas > 0){
 	<link href="css/style.css" rel='stylesheet' type='text/css' />
 
 	<!-- font-awesome icons CSS -->
+	<!-- https://fontawesome.com/v4/icons/ -->
 	<link href="css/font-awesome.css" rel="stylesheet"> 
 	<!-- //font-awesome icons CSS-->
 
@@ -237,8 +238,12 @@ if($linhas > 0){
 									
 								</ul>
 							</li>
-
-
+							<li class="<?php echo @$receber ?>">
+								<a href="receber"><i class="fa fa-eur"></i> Entradas / Recebimentos</a>
+							</li>
+							<li class="<?php echo @$calendario ?>">
+								<a href="calendario"><i class="fa fa-calendar"></i>Calendário</a>
+							</li>
 							<li class="treeview <?php echo @$menu_financeiro ?>">
 								<a href="#">
 									<i class="fa fa-money"></i>
@@ -247,8 +252,6 @@ if($linhas > 0){
 								</a>
 								<ul class="treeview-menu">
 									<li class="<?php echo @$pagar ?>"><a href="pagar"><i class="fa fa-angle-right"></i> Despesas / Saídas</a></li>
-
-									<li class="<?php echo @$receber ?>"><a href="receber"><i class="fa fa-angle-right"></i> Entradas / Recebimentos</a></li>
 
 									<li class="<?php echo @$receber_vencidas ?>"><a href="receber_vencidas"><i class="fa fa-angle-right"></i> Receber Vencidas</a></li>
 

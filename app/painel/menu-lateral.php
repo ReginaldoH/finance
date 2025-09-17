@@ -106,7 +106,14 @@ if ($linhas > 0) {
     </span>
   <?php } ?>
 
-
+    <span >
+      <a class="<?php echo @$calendario ?>" href="calendario" id="nav-comps" onclick="navigateToPage(event, 'calendario')"><i
+          class="gradient-orange rounded-s bg-teal-dark bi bi-calendar"></i>
+          <span>Calendário</span>
+        <i class="bi bi-chevron-right"></i>
+      </a>
+    </span>
+    
     <div >
       <a class="<?php echo @$menu_cadastros ?>" data-bs-toggle="collapse" href="#collapse-list-3" aria-controls="collapse-list-3">
         <i class="gradient-yellow shadow-bg shadow-bg-xs fa-solid fa-sliders"></i>
