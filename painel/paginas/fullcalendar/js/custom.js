@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var detalhesModalEl = document.getElementById('detalhesModal');
   var detalhesModal = new bootstrap.Modal(detalhesModalEl);
   var listaEventosEl = document.getElementById('listaEventos');
+  var detalheDiaEl = document.getElementById('detalheDia');
   var totalDiaEl = document.getElementById('totalDia');
 
   var calendarEl = document.getElementById('calendar');
@@ -70,11 +71,12 @@ document.addEventListener('DOMContentLoaded', function() {
           Object.keys(grouped).sort().forEach(function(date){
             var g = grouped[date];
             out.push({
-              title: 'R$ ' + g.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+              title: g.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
               start: date,
               allDay: true,
               extendedProps: {
                 total: g.total,
+                qtd: g.items.length,   // 👈 quantidade de contas
                 items: g.items
               }
             });
@@ -89,20 +91,48 @@ document.addEventListener('DOMContentLoaded', function() {
     },
 
     // mostra apenas o título (já com o total formatado)
+    // eventContent: function(arg) {
+    //   var div = document.createElement('div');
+    //   div.className = 'fc-event-title';
+    //   div.innerText = arg.event.title;
+    //   return { domNodes: [div] };
+    // },
     eventContent: function(arg) {
-      var div = document.createElement('div');
-      div.className = 'fc-event-title';
-      div.innerText = arg.event.title;
-      return { domNodes: [div] };
+      let total = arg.event.title; // valor formatado
+      let qtd = arg.event.extendedProps.qtd || 0; // quantidade de contas
+
+      let container = document.createElement('div');
+      container.className = 'fc-event-title';
+
+      // valor
+      let valorEl = document.createElement('span');
+      valorEl.textContent = total;
+      container.appendChild(valorEl);
+
+      // badge se houver mais de 0
+      if (qtd > 0) {
+        let badgeEl = document.createElement('span');
+        badgeEl.className = 'badge bg-success rounded-pill'; // badge azul
+        // posicionamento absoluto no canto superior direito
+        badgeEl.style.position = 'absolute';
+        badgeEl.style.top = '-12px';
+        badgeEl.style.right = '-10px';
+        badgeEl.style.fontSize = '0.65rem';
+        badgeEl.style.padding = '0.35em 0.45em';
+        badgeEl.textContent = qtd;
+        container.appendChild(badgeEl);
+      }
+
+      return { domNodes: [container] };
     },
 
     // abrir modal com detalhamento dos itens do dia
     eventClick: function(info) {
-            alert(info.event.title)
       var items = info.event.extendedProps.items || [];
       listaEventosEl.innerHTML = '';
       if (items.length === 0) {
         listaEventosEl.innerHTML = '<li class="list-group-item">Sem valores</li>';
+        detalheDiaEl.innerText = '';
         totalDiaEl.innerText = '';
       } else {
         items.forEach(function(it){
@@ -112,10 +142,12 @@ document.addEventListener('DOMContentLoaded', function() {
           var valorTxt = (typeof it._valorNum === 'number')
             ? it._valorNum.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
             : (it.valor || '0,00');
-          li.innerHTML = '<div>' + descricao + '</div><div>R$ ' + valorTxt + '</div>';
+          li.innerHTML = '<div>' + descricao + '</div><div><b>' + valorTxt + '</b></div>';
           listaEventosEl.appendChild(li);
         });
         var total = info.event.extendedProps.total || 0;
+        var dia = info.event.start.getDate();
+        detalheDiaEl.innerHTML = 'Detalhes do dia <b>(' + dia +')</b>';
         totalDiaEl.innerText = 'Total do dia: R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
       }
       detalhesModal.show();

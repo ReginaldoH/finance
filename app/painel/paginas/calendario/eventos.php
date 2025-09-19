@@ -12,7 +12,7 @@ $end = isset($_GET['end'])
     : date("Y-m-t");
 
 $query = $pdo->query("SELECT data_venc, valor, referencia, descricao from receber where pago != 'Sim'
- AND data_venc BETWEEN '$start' AND '$end' ");
+ AND data_venc BETWEEN '$start' AND '$end' ORDER BY descricao ASC");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $linhas = @count($res);
 $eventos = [];

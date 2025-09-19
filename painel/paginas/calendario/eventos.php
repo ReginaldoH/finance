@@ -12,7 +12,7 @@ $end = isset($_GET['end'])
     : date("Y-m-t");
 
 $query = $pdo->query("SELECT data_venc, valor, referencia, descricao from receber where pago != 'Sim'
- AND data_venc BETWEEN '$start' AND '$end' ");
+ AND data_venc BETWEEN '$start' AND '$end' ORDER BY descricao ASC");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $linhas = @count($res);
 $eventos = [];
@@ -21,7 +21,7 @@ if($linhas > 0){
         //  {"title":"Conta de Luz","start":"2025-09-20","valor":"120,50"},
         $valorF = $valorF = @number_format($res[$i]['valor'], 2, ',', '.');;
 		$eventos[] = [
-        'title' => $res[$i]['referencia'] . ': ' . $res[$i]['descricao'],
+        'title' => $res[$i]['descricao'],
         'start' => $res[$i]['data_venc'], // precisa estar em formato YYYY-MM-DD
         'valor' => $valorF
     ];

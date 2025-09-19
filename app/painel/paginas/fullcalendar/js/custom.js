@@ -4,29 +4,27 @@ document.addEventListener('DOMContentLoaded', function() {
   var detalhesModal = new bootstrap.Modal(detalhesModalEl);
   var listaEventosEl = document.getElementById('listaEventos');
   var totalDiaEl = document.getElementById('totalDia');
+  var detalheDiaEl = document.getElementById('detalheDia');
 
   var calendarEl = document.getElementById('calendar');
 
-  // var url = ""; 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     themeSystem: 'bootstrap5',
     initialView: 'dayGridMonth',
     locale: 'pt-br',
-    expandRows: true,        // expande altura das linhas
-    dayMaxEvents: false,     // nunca agrupar em "+x mais"
-    dayMaxEventRows: false,  // não quebrar em linhas extras
-    height: "auto",          // ajusta dinamicamente ao conteúdo
+    expandRows: true,
+    dayMaxEvents: false,
+    dayMaxEventRows: false,
+    height: "auto",
     contentHeight: "auto",
     headerToolbar: {
-        right: 'today',
-        center: 'title',
-        left: 'prev,next'
-        // right: 'dayGridMonth,timeGridWeek,listMonth'
+      right: 'today',
+      center: 'title',
+      left: 'prev,next'
     },
     height: 'auto',
-    // pegamos os eventos por função para poder agregar no cliente
+
     events: function(fetchInfo, successCallback, failureCallback) {
-      // monta URL com start/end + cliente
       var url = '../painel/paginas/calendario/eventos.php?start=' + encodeURIComponent(fetchInfo.startStr) + '&end=' + encodeURIComponent(fetchInfo.endStr);
       if (clienteSelect && clienteSelect.value) {
         url += '&cliente=' + encodeURIComponent(clienteSelect.value);
@@ -38,47 +36,43 @@ document.addEventListener('DOMContentLoaded', function() {
           return res.json();
         })
         .then(function(data){
-          // Espera-se que `data` seja um array de objetos com ao menos:
-          // { title, start, valor, ... }
-          // Vamos agrupar por data (YYYY-MM-DD)
-          var grouped = {}; // { '2025-09-20': { total: X, items:[...] } }
+          var grouped = {};
           data.forEach(function(item){
-            // normalize start
             var date = (item.start || item.vencimento || '').toString().substr(0,10);
             if (!date) return;
             if (!grouped[date]) grouped[date] = { total: 0, items: [] };
 
-            // tenta extrair valor numérico (suporta "123.45" ou "123,45")
             var valorRaw = item.valor;
             var valorNum = 0;
             if (typeof valorRaw === 'number') {
               valorNum = valorRaw;
             } else if (typeof valorRaw === 'string') {
-              // remove pontos de milhar e troca vírgula por ponto
               var tmp = valorRaw.replace(/\./g,'').replace(',','.');
               valorNum = parseFloat(tmp) || 0;
             }
 
             grouped[date].total += valorNum;
-            // armazena item com valor numérico para uso posterior
             var copy = Object.assign({}, item);
             copy._valorNum = valorNum;
             grouped[date].items.push(copy);
           });
 
-          // monta array de eventos agregados
           var out = [];
           Object.keys(grouped).sort().forEach(function(date){
             var g = grouped[date];
-            tt = String(g.total);
-            milharTotal = tt.replace(/,\d+$/, ""); 
-            milharTotal = Number(milharTotal)/1000;
+
+            // transforma total em milhares
+            var tt = String(g.total);
+            var milharTotal = tt.replace(/,\d+$/, ""); 
+            milharTotal = Number(milharTotal) / 1000;
+
             out.push({
               title: (milharTotal.toFixed(1)),
               start: date,
               allDay: true,
               extendedProps: {
                 total: g.total,
+                qtd: g.items.length,   // 👈 quantidade de contas
                 items: g.items
               }
             });
@@ -92,25 +86,50 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     },
 
-    // mostra apenas o título (já com o total formatado)
-    eventContent: function(arg) {
-      // var div = document.createElement('div');
-      // div.className = 'fc-event-title';
-      // div.innerText = arg.event.title;
-      // return { domNodes: [div] };
-      return {html: `<div style="text-align:center; display:flex; justify-content:center;  align-items:center; width:100%;">${arg.event.title}</div>`
-          }
-    },
+eventContent: function(arg) {
+  let valor = arg.event.title;
+  let qtd = arg.event.extendedProps.qtd || 0;
 
-    // abrir modal com detalhamento dos itens do dia
+  // container principal do evento
+  let wrapper = document.createElement('div');
+  wrapper.style.position = 'relative';
+  wrapper.style.width = '100%';
+  wrapper.style.textAlign = 'center';
+  wrapper.style.fontWeight = 'bold';
+
+  // valor no centro
+  let valorEl = document.createElement('div');
+  valorEl.textContent = valor;
+  wrapper.appendChild(valorEl);
+
+  // badge no canto superior direito
+  if (qtd > 0) {
+    let badgeEl = document.createElement('span');
+    badgeEl.className = 'badge bg-success rounded-pill';
+    badgeEl.textContent = qtd;
+
+    // posicionamento absoluto no canto superior direito
+    badgeEl.style.position = 'absolute';
+    badgeEl.style.top = '-12px';
+    badgeEl.style.right = '-10px';
+    badgeEl.style.fontSize = '0.65rem';
+    badgeEl.style.padding = '0.35em 0.45em';
+
+    wrapper.appendChild(badgeEl);
+  }
+
+  return { domNodes: [wrapper] };
+},
+
     eventClick: function(info) {
-       info.jsEvent.preventDefault(); // impede redirecionamento
-     info.event.setProp("url", 'calendario');
+      info.jsEvent.preventDefault(); 
+      info.event.setProp("url", 'calendario');
 
       var items = info.event.extendedProps.items || [];
       listaEventosEl.innerHTML = '';
       if (items.length === 0) {
         listaEventosEl.innerHTML = '<li class="list-group-item">Sem valores</li>';
+        detalheDiaEl.innerText = '';
         totalDiaEl.innerText = '';
       } else {
         items.forEach(function(it){
@@ -120,21 +139,20 @@ document.addEventListener('DOMContentLoaded', function() {
           var valorTxt = (typeof it._valorNum === 'number')
             ? it._valorNum.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
             : (it.valor || '0,00');
-          li.innerHTML = '<div>' + descricao + '</div><div>' + valorTxt + '</div>';
+          li.innerHTML = '<div>' + descricao + '</div><div><b>' + valorTxt + '</b></div>';
           listaEventosEl.appendChild(li);
         });
         var total = info.event.extendedProps.total || 0;
+        var dia = info.event.start.getDate();
+        detalheDiaEl.innerHTML = 'Detalhes do dia <b>(' + dia +')</b>';
         totalDiaEl.innerText = 'Total do dia: R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
       }
- 
       detalhesModal.show();
-
     }
   });
 
   calendar.render();
 
-  // refazer eventos ao trocar cliente
   if (clienteSelect) {
     clienteSelect.addEventListener('change', function(){ calendar.refetchEvents(); });
   }
