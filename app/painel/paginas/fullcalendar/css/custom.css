@@ -32,15 +32,22 @@
     display: inline-block;
 }
 
+.modal {
+    z-index: 1050 !important;
+}
+
 .modal.fade {
   opacity: 1 !important;
+}
+.modal-backdrop {
+    --bs-backdrop-zindex: 1040 !important;
 }
 
 /* * Botões do header do FullCalendar */ */
 .fc .fc-toolbar .fc-button {
   background-color: #198754;   /* verde bootstrap */
   border-color: #198754;
-  color: #fff;
+  color: #198754;
 }
 
 .fc .fc-toolbar .fc-button:hover {
@@ -51,4 +58,16 @@
 .fc .fc-toolbar .fc-button.fc-button-active {
   background-color: #0f5132;   /* verde ainda mais escuro */
   border-color: #0c4128;
+}
+
+.fc-h-event {
+    background-color: var(--fc-event-bg-color);
+    border: 1px solid var(--fc-event-border-color);
+    display: block;
+    color: #fff !important;
+}
+
+.modal-backdrop {
+    pointer-events: none; /* Não interfere nos cliques */
+    background-color: transparent !important; /* Se quiser totalmente transparente */
 }

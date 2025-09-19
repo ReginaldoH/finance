@@ -10,22 +10,20 @@ $start = isset($_GET['start'])
 $end = isset($_GET['end']) 
     ? date("Y-m-d", strtotime($_GET['end'])) 
     : date("Y-m-t");
-// echo('<pre>');
-// print_r($start);
-// print_r('<br>');
-// print_r($end);
-// echo('</pre>');
-// exit;
-$query = $pdo->query("SELECT data_venc, valor from receber where pago != 'Sim'
+
+$query = $pdo->query("SELECT data_venc, valor, referencia, descricao from receber where pago != 'Sim'
  AND data_venc BETWEEN '$start' AND '$end' ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $linhas = @count($res);
 $eventos = [];
 if($linhas > 0){
 	for($i=0; $i<$linhas; $i++){
+        //  {"title":"Conta de Luz","start":"2025-09-20","valor":"120,50"},
+        $valorF = $valorF = @number_format($res[$i]['valor'], 2, ',', '.');;
 		$eventos[] = [
-        'title' => 'R$ ' . number_format($res[$i]['valor'], 2, ',', '.'),
-        'start' => $res[$i]['data_venc'] // precisa estar em formato YYYY-MM-DD
+        'title' => $res[$i]['descricao'],
+        'start' => $res[$i]['data_venc'], // precisa estar em formato YYYY-MM-DD
+        'valor' => $valorF
     ];
 
 

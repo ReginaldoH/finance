@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var calendarEl = document.getElementById('calendar');
 
+  // var url = ""; 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     themeSystem: 'bootstrap5',
     initialView: 'dayGridMonth',
@@ -16,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
     dayMaxEventRows: false,  // não quebrar em linhas extras
     height: "auto",          // ajusta dinamicamente ao conteúdo
     contentHeight: "auto",
-    
     headerToolbar: {
-        left: 'prev,next today',
+        right: 'today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,listMonth'
+        left: 'prev,next'
+        // right: 'dayGridMonth,timeGridWeek,listMonth'
     },
     height: 'auto',
     // pegamos os eventos por função para poder agregar no cliente
@@ -69,8 +70,11 @@ document.addEventListener('DOMContentLoaded', function() {
           var out = [];
           Object.keys(grouped).sort().forEach(function(date){
             var g = grouped[date];
+            tt = String(g.total);
+            milharTotal = tt.replace(/,\d+$/, ""); 
+            milharTotal = Number(milharTotal)/1000;
             out.push({
-              title: 'R$ ' + g.total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+              title: (milharTotal.toFixed(1)),
               start: date,
               allDay: true,
               extendedProps: {
@@ -90,15 +94,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // mostra apenas o título (já com o total formatado)
     eventContent: function(arg) {
-      var div = document.createElement('div');
-      div.className = 'fc-event-title';
-      div.innerText = arg.event.title;
-      return { domNodes: [div] };
+      // var div = document.createElement('div');
+      // div.className = 'fc-event-title';
+      // div.innerText = arg.event.title;
+      // return { domNodes: [div] };
+      return {html: `<div style="text-align:center; display:flex; justify-content:center;  align-items:center; width:100%;">${arg.event.title}</div>`
+          }
     },
 
     // abrir modal com detalhamento dos itens do dia
     eventClick: function(info) {
-            alert(info.event.title)
+       info.jsEvent.preventDefault(); // impede redirecionamento
+     info.event.setProp("url", 'calendario');
+
       var items = info.event.extendedProps.items || [];
       listaEventosEl.innerHTML = '';
       if (items.length === 0) {
@@ -112,13 +120,15 @@ document.addEventListener('DOMContentLoaded', function() {
           var valorTxt = (typeof it._valorNum === 'number')
             ? it._valorNum.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
             : (it.valor || '0,00');
-          li.innerHTML = '<div>' + descricao + '</div><div>R$ ' + valorTxt + '</div>';
+          li.innerHTML = '<div>' + descricao + '</div><div>' + valorTxt + '</div>';
           listaEventosEl.appendChild(li);
         });
         var total = info.event.extendedProps.total || 0;
         totalDiaEl.innerText = 'Total do dia: R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
       }
+ 
       detalhesModal.show();
+
     }
   });
 

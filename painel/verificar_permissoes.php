@@ -20,6 +20,7 @@ $clientes = 'ocultar';
 $grupo_acessos = 'ocultar';
 $acessos = 'ocultar';
 $formas_pgto = 'ocultar';
+$calendario = 'ocultar';
 $frequencias = 'ocultar';
 $feriados = 'ocultar';
 $status_clientes = 'ocultar';
@@ -104,6 +105,9 @@ if($total_reg > 0){
 
 		if($chave == 'formas_pgto'){
 			$formas_pgto = '';
+		}
+		if($chave == 'calendario'){
+			$calendario = '';
 		}
 
 		if($chave == 'frequencias'){
