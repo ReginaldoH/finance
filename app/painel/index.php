@@ -461,7 +461,7 @@ require_once("paginas/" . $pagina . ".php");
 
 
 <!-- GESTÃO MENSAGEM -->
-<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height: auto; margin-top: 15%;" id="menu-gestao">
+<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height: auto; margin-top: 17%;" id="menu-gestao">
   <div class="content ">
     <div class="d-flex pb-0">
       <div class="align-self-center">

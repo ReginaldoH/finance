@@ -17,7 +17,7 @@ if(@$calendario == 'ocultar'){
 <div class="container" style="margin-top: 70px;">
   <div class="row align-items-center mt-3 mb-2">
     <div class="col-8">
-      <h4 class="m-0">📅 Agenda Receber123</h4>
+      <h4 class="m-0">📅 Agenda Receber</h4>
     </div>
     <div class="col-4 text-end">
       <!-- exemplo de select cliente (opcional) -->
@@ -52,8 +52,7 @@ if(@$calendario == 'ocultar'){
 </div>
 
 <!-- Bootstrap + FullCalendar JS (CDN) -->
- <!-- <script src="paginas/fullcalendar/js/bootstrap5/bootstrap.bundle.min.js"></script> -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
    
 <script src='paginas/fullcalendar/js/core/locales-all.global.min.js'></script>

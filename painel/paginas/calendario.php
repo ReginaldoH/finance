@@ -52,7 +52,7 @@ if(@$calendario == 'ocultar'){
 </div>
 
 <!-- Bootstrap + FullCalendar JS (CDN) -->
-<script src="paginas/fullcalendar/js/bootstrap5/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
      
 <script src='paginas/fullcalendar/js/core/locales-all.global.min.js'></script>

@@ -219,8 +219,8 @@ if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 	$mensagem .= '_Novo Empréstimo_ %0A';
 	
 	$mensagem .= 'Cliente: *'.$nome_cliente.'* %0A';
-	$mensagem .= 'Valor: '.$valorF.' %0A';
-	$mensagem .= 'Júros '.$tipo_juros.': '.$juros_emp.''.$pcto.' %0A';
+	// $mensagem .= 'Valor: '.$valorF.' %0A';
+	// $mensagem .= 'Júros '.$tipo_juros.': '.$juros_emp.''.$pcto.' %0A';
 	if($tipo_juros != "Somente Júros"){
 		$mensagem .= 'Júros pago no final: *'.$valor_total_jurosF.'* %0A';
 	}
@@ -243,7 +243,7 @@ if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 			$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
 			$valorF = number_format($valor, 2, ',', '.');
 
-			$mensagem .= '💲('.$parcela.') R$: *'.$valorF.'* Venc: '.$data_vencF.'%0A';
+			$mensagem .= '💲('.$parcela.') R$ *'.$valorF.'* Venc: '.$data_vencF.'%0A';
 		}
 	}
 

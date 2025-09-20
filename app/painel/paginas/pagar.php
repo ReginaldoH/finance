@@ -425,7 +425,7 @@ HTML;
 </a>
 
 <!-- MODAL MOSTRAR -->
-<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:98%" id="menu-share-mostrar">
+<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:98%; margin-top: 60px;" id="menu-share-mostrar">
   <div class="content ">
     <div class="d-flex pb-2">
       <div class="align-self-center">

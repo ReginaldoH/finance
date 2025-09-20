@@ -132,43 +132,43 @@ echo 'Salvo com Sucesso';
 
 
 if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
-//enviar mensagem para o cliente
+	//enviar mensagem para o cliente
 
-$data_vencF = date('d', strtotime($data_venc));
-$dataF = implode('/', array_reverse(explode('-', $data_atual)));
-$valorF = number_format($valor, 2, ',', '.');
-$valor_total_jurosF = number_format($valor_total_juros, 2, ',', '.');
+	$data_vencF = date('d', strtotime($data_venc));
+	$dataF = implode('/', array_reverse(explode('-', $data_atual)));
+	$valorF = number_format($valor, 2, ',', '.');
+	$valor_total_jurosF = number_format($valor_total_juros, 2, ',', '.');
 
-$mensagem =  '💰_'.$nome_sistema.'_ %0A';
-$mensagem .= '😀Cliente: *'.$nome_cliente.'* %0A';
-$mensagem .= '💲Valor: *'.$valorF.'* %0A';
-$mensagem .= 'Data Cobrança: *'.$dataF.'* %0A';
-$mensagem .= 'Dia Pgto Cobranças: *Dia '.$data_vencF.'* %0A';
-$mensagem .= $texto_cobranca.': *'.$frequencia.'* %0A%0A';
+	$mensagem =  '💰_'.$nome_sistema.'_ %0A';
+	$mensagem .= '😀Cliente: *'.$nome_cliente.'* %0A';
+	$mensagem .= '💲Valor: *'.$valorF.'* %0A';
+	$mensagem .= 'Data Cobrança: *'.$dataF.'* %0A';
+	$mensagem .= 'Dia Pgto Cobranças: *Dia '.$data_vencF.'* %0A';
+	$mensagem .= $texto_cobranca.': *'.$frequencia.'* %0A%0A';
 
-if($parcelas > 1){
-$mensagem .= '*Parcelas* %0A';
+	if($parcelas > 1){
+		$mensagem .= '*Parcelas* %0A';
 
-$query = $pdo->query("SELECT * FROM receber where referencia = 'Cobrança' and id_ref = '$ult_id'  order by id asc");
-$res = $query->fetchAll(PDO::FETCH_ASSOC);
-$total_reg = @count($res);
-if($total_reg > 0){
-	for($i=0; $i < $total_reg; $i++){
-		$valor = $res[$i]['valor'];
-		$parcela = $res[$i]['parcela'];
-		$data_venc = $res[$i]['data_venc'];
+		$query = $pdo->query("SELECT * FROM receber where referencia = 'Cobrança' and id_ref = '$ult_id'  order by id asc");
+		$res = $query->fetchAll(PDO::FETCH_ASSOC);
+		$total_reg = @count($res);
+		if($total_reg > 0){
+			for($i=0; $i < $total_reg; $i++){
+				$valor = $res[$i]['valor'];
+				$parcela = $res[$i]['parcela'];
+				$data_venc = $res[$i]['data_venc'];
 
-		$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
-		$valorF = number_format($valor, 2, ',', '.');
+				$data_vencF = implode('/', array_reverse(explode('-', $data_venc)));
+				$valorF = number_format($valor, 2, ',', '.');
 
-		$mensagem .= '💲('.$parcela.') R$: *'.$valorF.'* Venc: '.$data_vencF.'%0A';
+				$mensagem .= '💲('.$parcela.') R$ *'.$valorF.'* Venc: '.$data_vencF.'%0A';
+			}
+		}
+
 	}
-}
-
-}
 
 
-require('../../apis/texto.php');
+	require('../../apis/texto.php');
 
 }
 

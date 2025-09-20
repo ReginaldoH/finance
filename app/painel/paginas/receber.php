@@ -329,7 +329,9 @@ $valor_finalF = @number_format($valor_final, 2, ',', '.');
           <div class="ms-auto">
             <a onclick="editar('{$id}','{$descricao}','{$valor_finalF}','{$data_venc}','{$obs}','{$cliente}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-twitter"><i class="fa fa-edit text-white"></i></a>
            
-            <a onclick="baixarConta('{$id}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-green"><i class="bi bi-check-square-fill text-white"></i></a>
+            <a onclick="mensagem_w_receber('{$id}', '{$descricao}', '{$valor}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-green"><i class="bi bi-whatsapp text-white"></i></a>
+            
+            <a onclick="baixarConta('{$id}', '{$descricao}', '{$valor}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-success"><i class="bi bi-check-square-fill text-white"></i></a>
 
             <a onclick="arquivo('{$id}', '{$descricao}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-dark"><i class="fa fa-file text-white"></i></a>
 
@@ -399,7 +401,7 @@ HTML;
 
 
 <!-- MODAL CADASTRO RECEBER-->
-<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:100%; margin-top: 15%;" id="popupForm">
+<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:100%; margin-top: 17%;" id="popupForm">
   <div class="content mb-0">
     <div class="d-flex pb-2">
       <div class="align-self-center">
@@ -498,7 +500,7 @@ HTML;
 </a>
 
 <!-- MODAL MOSTRAR -->
-<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:98%" id="menu-share-mostrar">
+<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:98%; margin-top: 60px;" id="menu-share-mostrar">
   <div class="content ">
     <div class="d-flex pb-2">
       <div class="align-self-center">
@@ -707,7 +709,7 @@ HTML;
 <script type="text/javascript">
   
 // ALERT EXCLUIR #######################################
-function baixarConta(id) {
+function baixarConta(id, text, valor) {
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-success", // Adiciona margem à direita do botão "Sim, Excluir!"
@@ -716,10 +718,10 @@ function baixarConta(id) {
         },
         buttonsStyling: false
     });
-
+    msgText = "<b>"+text + " - R$ " + valor + "</b>";
     swalWithBootstrapButtons.fire({
         title: "Deseja Baixa a Conta?",
-        text: "Definir a conta como Paga!",
+        html: msgText + "<br><br>Definir a conta como Paga!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Sim, Baixar!",
@@ -769,7 +771,59 @@ function baixarConta(id) {
     });
 }
 
-</script>
 
+//enviar mensagem para Whatsapp conta receber atual
+function mensagem_w_receber(id, text, valor){	
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success", // Adiciona margem à direita do botão "Sim, Excluir!"
+            cancelButton: "btn btn-danger me-1",
+            container: 'swal-whatsapp-container'
+        },
+        buttonsStyling: false
+    });
+    msgText = "<b>Para: "+text;
+    swalWithBootstrapButtons.fire({
+        title: "Deseja enviar cobrança?",
+        html: msgText + "<br><br>confirma o envio da mensagem via Whatsapp!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sim",
+        cancelButtonText: "Não",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Realiza a requisição AJAX para enviar mensagem
+            $.ajax({
+                url: 'paginas/' + pag + "/mensagem.php",
+                method: 'POST',
+                data: { id },
+                dataType: "html",
+                success: function (mensagem) {
+                    // Exibe mensagem de sucesso após a exclusão
+                    swalWithBootstrapButtons.fire({
+                        title: 'Sucesso!',
+                        text: 'Enviado com sucesso!',
+                        icon: "success",
+                        timer: 500,
+                        timerProgressBar: true,
+                        confirmButtonText: 'OK',
+                    });
+                   
+                }
+            });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+                title: "Cancelado",
+                text: "Fecharei em 1 segundo.",
+                icon: "error",
+                timer: 1000,
+                timerProgressBar: true,
+            });
+        }
+    });
+}
+
+</script>
 
 <script type="text/javascript">var pag = "<?= $pag ?>"</script>

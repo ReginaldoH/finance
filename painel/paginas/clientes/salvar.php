@@ -28,6 +28,7 @@ $dados_emprestimo = @$_POST['dados_emprestimo'];
 $cliente_cadastro = @$_POST['cliente_cadastro'];
 $telefone2 = @$_POST['telefone2'];
 $status_cliente = @$_POST['status_cliente'];
+$enviar_whatsapp = @$_POST['enviar_whatsapp'];
 
 $senha = @$_POST['senha'];
 $conf_senha = @$_POST['conf_senha'];
@@ -313,8 +314,6 @@ $query->execute();
 
 echo 'Salvo com Sucesso';
 
-
-
 $tel_cliente = '55'.preg_replace('/[ ()-]+/' , '' , $telefone_sistema);
 $telefone_envio = $tel_cliente;
 
@@ -327,28 +326,28 @@ if($cliente_cadastro == 'Sim' and $token != "" and $instancia != ""){
 	require('../../apis/texto.php');
 }
 
+if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 
+	$tel_cliente = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
+	$telefone_envio = $tel_cliente;
 
-$tel_cliente = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
-$telefone_envio = $tel_cliente;
+	if($token != "" and $instancia != ""){
+		$mensagem = '*'.$nome_sistema.'* %0A';
+		$mensagem .= '_Você foi cadastrado no Sistema_ %0A';
+		$mensagem .= 'Cliente: *'.$nome.'* %0A';
+		$mensagem .= '_Acesse seu Painel_ %0A%0A';
 
-if($token != "" and $instancia != ""){
-	$mensagem = '*'.$nome_sistema.'* %0A';
-	$mensagem .= '_Você foi cadastrado no Sistema_ %0A';
-	$mensagem .= 'Cliente: *'.$nome.'* %0A';
-	$mensagem .= '_Acesse seu Painel_ %0A%0A';
+		if($cliente_cadastro == 'Sim'){
+			$sua_senha = ' sua senha de cadastro!';
+		}else{
+			$sua_senha = ' a senha 123';
+		}
 
-	if($cliente_cadastro == 'Sim'){
-		$sua_senha = ' sua senha de cadastro!';
-	}else{
-		$sua_senha = ' a senha 123';
+		$mensagem .= 'Use seu CPF e '.$sua_senha.' %0A';
+		$mensagem .= $url_sistema.'acesso';
+
+		require('../../apis/texto.php');
 	}
-
-	$mensagem .= 'Use seu CPF e '.$sua_senha.' %0A';
-	$mensagem .= $url_sistema.'acesso';
-
-	require('../../apis/texto.php');
 }
-
 
  ?>

@@ -445,7 +445,7 @@ HTML;
 </a>
 
 <!-- MODAL BAIXAR -->
-<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:95%;" id="menu-share-baixar-contas">
+<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:95%; margin-top: 60px;" id="menu-share-baixar-contas">
   <div class="content ">
     <div class="d-flex pb-0">
       <div class="align-self-center">

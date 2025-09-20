@@ -630,6 +630,18 @@ HTML;
     </div>
     <input type="file" name="foto" id="foto" style="display:none" onchange="carregarImg();">
   </div>
+  
+  <!-- Enviar WhatsApp -->
+    <div class="col-12">
+      <div class="form-floating position-relative">
+        <i class="bi bi-whatsapp position-absolute start-0 top-50 translate-middle-y ms-3"></i>
+        <select name="enviar_whatsapp" id="enviar_whatsapp_emp" class="form-select rounded-xs ps-5">  
+          <option value="Não">Não</option>
+          <option value="Sim">Sim</option>
+        </select>
+        <label class="color-theme ps-5">Enviar WhatsApp</label>
+      </div>
+    </div>
 
 </div>
 
@@ -1115,7 +1127,7 @@ HTML;
 </a>
 
 <!-- MODAL BAIXAR -->
-<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:95%;" id="menu-share-baixar-contas">
+<div class="offcanvas offcanvas-top rounded-m offcanvas-detached" style="height:95%;margin-top: 60px;" id="menu-share-baixar-contas">
   <div class="content ">
     <div class="d-flex pb-0">
       <div class="align-self-center">
