@@ -126,7 +126,7 @@ if ($pag_proxima == $num_paginas) {
       <select class="sel_nulo rounded-xs ps-5 pe-5" name="cliente_busca" id="cliente_busca" onchange="$('#btn_filtrar').click()" style="width:100%;">
         <option value="" data-cor="">Selecionar Cliente</option>
         <?php 
-          $query = $pdo->query("SELECT * from clientes order by id asc");
+          $query = $pdo->query("SELECT * from clientes order by nome asc");
           $res = $query->fetchAll(PDO::FETCH_ASSOC);
           $linhas = @count($res);
           if($linhas > 0){

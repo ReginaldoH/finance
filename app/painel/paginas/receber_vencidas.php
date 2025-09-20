@@ -324,7 +324,7 @@ HTML;
       <select class="sel2 rounded-xs ps-5 pe-5" name="cliente" id="cliente" style="width:100%;">
         <option value="" data-cor="">Selecionar Cliente</option>
         <?php 
-          $query = $pdo->query("SELECT * from clientes order by id asc");
+          $query = $pdo->query("SELECT * from clientes order by nome asc");
           $res = $query->fetchAll(PDO::FETCH_ASSOC);
           $linhas = @count($res);
           if($linhas > 0){
