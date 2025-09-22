@@ -44,7 +44,7 @@ if($status_busca != ""){
 
 
 //totalizar páginas
-$query2 = $pdo->query("SELECT * from $pag  where (nome like '%$buscar%' or telefone like '%$buscar%' or email like '%$buscar%' or cpf like '%$buscar%') $sql_status order by nome asc");
+$query2 = $pdo->query("SELECT id from $pag  where (nome like '%$buscar%' or telefone like '%$buscar%' or email like '%$buscar%' or cpf like '%$buscar%') $sql_status order by nome asc");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $linhas2 = @count($res2);
 
@@ -126,199 +126,245 @@ if ($pag_proxima == $num_paginas) {
 
   <div class="card card-style">
     <div class="content">
-      <?php
-      $query = $pdo->query("SELECT DISTINCT c.* from $pag c 
-    WHERE (c.nome LIKE '%$buscar%' OR c.telefone LIKE '%$buscar%' OR c.email LIKE '%$buscar%' OR c.cpf LIKE '%$buscar%') $sql_status " .
-        ($ativo === 'Não' ? " AND c.ativo = 'Não'" :
-          ($ativo === 'Sim' ? " AND c.ativo = 'Sim'" :
-            ($ativo === '' ? " AND c.ativo = ''" :
-              ($ativo === 'ina' ? " AND EXISTS (
-        SELECT 1 FROM receber r 
-        WHERE r.cliente = c.id 
-        AND r.pago = 'Não' 
-        AND r.vencimento < CURDATE()
-     )" : "")))) .
-        " ORDER BY c.nome asc LIMIT $limite, $itens_pag");
+    <?php
+    // $query = $pdo->query("SELECT DISTINCT c.* from $pag c 
+    // WHERE (c.nome LIKE '%$buscar%' OR c.telefone LIKE '%$buscar%' OR c.email LIKE '%$buscar%' OR c.cpf LIKE '%$buscar%') $sql_status " .
+    //     ($ativo === 'Não' ? " AND c.ativo = 'Não'" :
+    //       ($ativo === 'Sim' ? " AND c.ativo = 'Sim'" :
+    //         ($ativo === '' ? " AND c.ativo = ''" :
+    //           ($ativo === 'ina' ? " AND EXISTS (
+    //     SELECT 1 FROM receber r 
+    //     WHERE r.cliente = c.id 
+    //     AND r.pago = 'Não' 
+    //     AND r.vencimento < CURDATE()
+    //  )" : "")))) .
+    //     " ORDER BY c.nome asc LIMIT $limite, $itens_pag");
+
+
+    $sql_filtro_ativo = "";
+    if ($ativo === "Não") {
+        $sql_filtro_ativo = " AND c.ativo = 'Não'";
+    } elseif ($ativo === "Sim") {
+        $sql_filtro_ativo = " AND c.ativo = 'Sim'";
+    } elseif ($ativo === "") {
+        $sql_filtro_ativo = " AND c.ativo = ''";
+    } elseif ($ativo === "ina") {
+        $sql_filtro_ativo = " AND EXISTS (
+            SELECT 1 FROM receber r 
+            WHERE r.cliente = c.id 
+            AND r.pago = 'Não' 
+            AND r.vencimento < CURDATE()
+        )";
+    }
+
+    $query = $pdo->query("SELECT c.*,
+                  COALESCE(SUM(CASE WHEN r.pago != 'Sim' THEN 1 ELSE 0 END), 0) AS qtd_abertos,
+                  MIN(CASE WHEN r.pago != 'Sim' THEN r.data_venc END) AS menor_vencimento
+                    FROM clientes c
+                    LEFT JOIN receber r ON r.cliente = c.id
+                    WHERE (
+                        c.nome LIKE '%$buscar%'
+                        OR c.telefone LIKE '%$buscar%'
+                        OR c.email LIKE '%$buscar%'
+                        OR c.cpf LIKE '%$buscar%'
+                    )
+                    $sql_status
+                    $sql_filtro_ativo
+                    GROUP BY c.id
+                    ORDER BY c.nome ASC
+                    LIMIT $limite, $itens_pag ");
+
       $res = $query->fetchAll(PDO::FETCH_ASSOC);
+// echo('<pre>');
+// print_r($res);
+// echo('</pre>');
+// exit;
       $linhas = @count($res);
-      if ($linhas > 0) {
-        for ($i = 0; $i < $linhas; $i++) {
-          $id = $res[$i]['id'];
-  $nome = $res[$i]['nome'];
-  $telefone = $res[$i]['telefone'];
-  $email = $res[$i]['email'];
-  $cpf = $res[$i]['cpf']; 
-  $endereco = $res[$i]['endereco'];
-  $data_nasc = $res[$i]['data_nasc'];
-  $data_cad = $res[$i]['data_cad'];
-  $obs = $res[$i]['obs'];
-  $pix = $res[$i]['pix'];
-  $indicacao = $res[$i]['indicacao'];
-  $bairro = $res[$i]['bairro'];
-  $cidade = $res[$i]['cidade'];
-  $estado = $res[$i]['estado'];
-  $cep = $res[$i]['cep'];
-  $pessoa = $res[$i]['pessoa'];
+    if ($linhas > 0) {
+      for ($i = 0; $i < $linhas; $i++) {
+        $id = $res[$i]['id'];
+        $nome = $res[$i]['nome'];
+        $telefone = $res[$i]['telefone'];
+        $email = $res[$i]['email'];
+        $cpf = $res[$i]['cpf']; 
+        $endereco = $res[$i]['endereco'];
+        $data_nasc = $res[$i]['data_nasc'];
+        $data_cad = $res[$i]['data_cad'];
+        $obs = $res[$i]['obs'];
+        $pix = $res[$i]['pix'];
+        $indicacao = $res[$i]['indicacao'];
+        $bairro = $res[$i]['bairro'];
+        $cidade = $res[$i]['cidade'];
+        $estado = $res[$i]['estado'];
+        $cep = $res[$i]['cep'];
+        $pessoa = $res[$i]['pessoa'];
 
-  $nome_sec = @$res[$i]['nome_sec'];
-  $telefone_sec = @$res[$i]['telefone_sec'];
-  $endereco_sec = @$res[$i]['endereco_sec'];
-  $grupo = @$res[$i]['grupo'];
-  $status = @$res[$i]['status'];
-  $comprovante_rg = @$res[$i]['comprovante_rg'];
-  $comprovante_endereco = @$res[$i]['comprovante_endereco'];
-  $dados_emprestimo = @$res[$i]['dados_emprestimo'];
+        $nome_sec = @$res[$i]['nome_sec'];
+        $telefone_sec = @$res[$i]['telefone_sec'];
+        $endereco_sec = @$res[$i]['endereco_sec'];
+        $grupo = @$res[$i]['grupo'];
+        $status = @$res[$i]['status'];
+        $comprovante_rg = @$res[$i]['comprovante_rg'];
+        $comprovante_endereco = @$res[$i]['comprovante_endereco'];
+        $dados_emprestimo = @$res[$i]['dados_emprestimo'];
+        $qtd_abertos = @$res[$i]['qtd_abertos'] == 0 ?'':@$res[$i]['qtd_abertos'];
+        $menor_vencimento = @$res[$i]['menor_vencimento'] <= $data_atual ?"red":"green";
 
-  $telefone2 = @$res[$i]['telefone2'];
-  $foto = @$res[$i]['foto'];
-  $status_cliente = @$res[$i]['status_cliente'];
+        $telefone2 = @$res[$i]['telefone2'];
+        $foto = @$res[$i]['foto'];
+        $status_cliente = @$res[$i]['status_cliente'];
 
-  $dados_emprestimoF = @rawurlencode($dados_emprestimo);
+        $dados_emprestimoF = @rawurlencode($dados_emprestimo);
 
-  @$data_nascF = implode('/', array_reverse(explode('-', $data_nasc)));
-  $data_cadF = implode('/', array_reverse(explode('-', $data_cad)));
+        @$data_nascF = implode('/', array_reverse(explode('-', $data_nasc)));
+        $data_cadF = implode('/', array_reverse(explode('-', $data_cad)));
 
-  $tel_whatsF = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
+        $tel_whatsF = '55'.preg_replace('/[ ()-]+/' , '' , $telefone);
 
-$query2 = $pdo->query("SELECT * from status_clientes where nome = '$status_cliente'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-$cor = @$res2[0]['cor'];
-if($cor == ""){
-  $ocultar_cor = 'none';
-}else{
-  $ocultar_cor = '';
-}
-
-
-  //verificar total de emprestimos do cliente
-$query2 = $pdo->query("SELECT * from emprestimos where cliente = '$id'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-$total_emprestimos = @count($res2);
-
-$query2 = $pdo->query("SELECT * from cobrancas where cliente = '$id'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-$total_cobrancas = @count($res2);
-
-$query2 = $pdo->query("SELECT * from receber where referencia = 'Conta' and cliente = '$id'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-$total_contas = @count($res2);
+        $query2 = $pdo->query("SELECT * from status_clientes where nome = '$status_cliente'");
+        $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+        $cor = @$res2[0]['cor'];
+        if($cor == ""){
+          $ocultar_cor = 'none';
+        }else{
+          $ocultar_cor = '';
+        }
 
 
-$classe_status = '';  
-$badge_status = '';
+        //verificar total de emprestimos do cliente
+        $query2 = $pdo->query("SELECT * from emprestimos where cliente = '$id'");
+        $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+        $total_emprestimos = @count($res2);
 
-if($status == "Ativo"){
-  $classe_status = 'green'; 
-  $badge_status = 'bg-success';
-}
+        $query2 = $pdo->query("SELECT * from cobrancas where cliente = '$id'");
+        $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+        $total_cobrancas = @count($res2);
 
-if($status == "Inativo"){
-  $classe_status = 'gray';
-  $badge_status = 'bg-secondary'; 
-}
+        $query2 = $pdo->query("SELECT * from receber where referencia = 'Conta' and cliente = '$id'");
+        $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+        $total_contas = @count($res2);
 
-if($status == "Alerta"){
-  $classe_status = 'orange';
-  $badge_status = 'bg-alert'; 
-}
+
+        $classe_status = '';  
+        $badge_status = '';
+
+        if($status == "Ativo"){
+          $classe_status = 'green'; 
+          $badge_status = 'bg-success';
+        }
+
+        if($status == "Inativo"){
+          $classe_status = 'gray';
+          $badge_status = 'bg-secondary'; 
+        }
+
+        if($status == "Alerta"){
+          $classe_status = 'orange';
+          $badge_status = 'bg-alert'; 
+        }
   
-if($status == "Atenção"){
-  $classe_status = 'red'; 
-  $badge_status = 'bg-danger';
-}
+        if($status == "Atenção"){
+          $classe_status = 'red'; 
+          $badge_status = 'bg-danger';
+        }
 
-$ocultar_empre = '';
-if($recursos == 'Cobranças'){
-  $ocultar_empre = 'ocultar';
-}
+        $ocultar_empre = '';
+        if($recursos == 'Cobranças'){
+          $ocultar_empre = 'ocultar';
+        }
 
-$ocultar_cobr = '';
-if($recursos == 'Empréstimos'){
-  $ocultar_cobr = 'ocultar';
-}
+        $ocultar_cobr = '';
+        if($recursos == 'Empréstimos'){
+          $ocultar_cobr = 'ocultar';
+        }
 
-      //extensão do arquivo
-$ext = pathinfo($comprovante_endereco, PATHINFO_EXTENSION);
-if($ext == 'pdf'){
-  $tumb_comprovante_endereco = 'pdf.png';
-}else if($ext == 'rar' || $ext == 'zip'){
-  $tumb_comprovante_endereco = 'rar.png';
-}else{
-  $tumb_comprovante_endereco = $comprovante_endereco;
-}
+        //extensão do arquivo
+        $ext = pathinfo($comprovante_endereco, PATHINFO_EXTENSION);
+        if($ext == 'pdf'){
+          $tumb_comprovante_endereco = 'pdf.png';
+        }else if($ext == 'rar' || $ext == 'zip'){
+          $tumb_comprovante_endereco = 'rar.png';
+        }else{
+          $tumb_comprovante_endereco = $comprovante_endereco;
+        }
 
 
-      //extensão do arquivo
-$ext = pathinfo($comprovante_rg, PATHINFO_EXTENSION);
-if($ext == 'pdf'){
-  $tumb_comprovante_rg = 'pdf.png';
-}else if($ext == 'rar' || $ext == 'zip'){
-  $tumb_comprovante_rg = 'rar.png';
-}else{
-  $tumb_comprovante_rg = $comprovante_rg;
-}
+        //extensão do arquivo
+        $ext = pathinfo($comprovante_rg, PATHINFO_EXTENSION);
+        if($ext == 'pdf'){
+          $tumb_comprovante_rg = 'pdf.png';
+        }else if($ext == 'rar' || $ext == 'zip'){
+          $tumb_comprovante_rg = 'rar.png';
+        }else{
+          $tumb_comprovante_rg = $comprovante_rg;
+        }
 
-$enderecoF2 = rawurlencode($endereco);
+        $enderecoF2 = rawurlencode($endereco);
 
           echo <<<HTML
-      <div data-splide='{"autoplay":false}' class="splide single-slider slider-no-arrows slider-no-dots" id="user-slider-{$id}">
-        <div class="splide__track">
-          <div class="splide__list">
-            <div class="splide__slide mx-3">
-              <div class="d-flex">
-              <div ><img src="../../painel/images/clientes/{$foto}" class="me-3 rounded-circle shadow-l" width="40"></div>
-
-                <div onclick="mostrar('{$id}', '{$nome}','{$telefone}','{$cpf}','{$email}','{$enderecoF2}','{$data_nascF}', '{$data_cadF}', '{$obs}', '{$pix}', '{$indicacao}', '{$bairro}', '{$cidade}', '{$estado}', '{$cep}', '{$total_emprestimos}', '{$total_cobrancas}', '{$pessoa}', '{$total_contas}', '{$nome_sec}', '{$telefone_sec}', '{$endereco_sec}', '{$grupo}', '{$dados_emprestimoF}', '{$comprovante_endereco}', '{$comprovante_rg}', '{$tumb_comprovante_endereco}', '{$tumb_comprovante_rg}', '{$telefone2}', '{$foto}')">
-                <h5 class="mt-1 mb-0" style="font-size: 13px;"><i class="fa fa-square" style="color:{$cor}; display:{$ocultar_cor}"></i> {$nome}</h5>
-                <p class="font-12 mt-n2 mb-0 ">{$telefone}</p>
-                <p class="font-12 mt-n2 mb-0 color-blue-dark"></p>
-                <p class="font-12 mt-n2 mb-0 color-blue-dark"> <span class="">{$email}</span></p>
-                <p class="font-12 mt-n2 mb-0">Cadastrado: {$data_cadF}</p>
-                </div>
-                <div class="ms-auto"><span class="px-2 py-1 badge mt-4 p-2 font-12 shadow-bg shadow-bg-s" style="background:{$cor}">{$status_cliente}</span></div>
-
-                <div class="ms-auto"><span class="badge bg-blue-dark mt-0 p-1 font-8 shadow-bg-s"><i class="fa fa-arrow-right"></i></span></div>
+        <div data-splide='{"autoplay":false}' class="splide single-slider slider-no-arrows slider-no-dots" id="user-slider-{$id}">
+          <div class="splide__track">
+            <div class="splide__list">
+              <div class="splide__slide mx-3">
+                <div class="d-flex">
+                  <div >
+                    
+                    <em class="badge ms-1 text-white" 
+                  style="position: absolute; margin-left: 41px; padding: 5px 0px; height: 20px; width: 20px; border-radius: 10px; left: -10px; top: -13px; background-color: {$menor_vencimento};">{$qtd_abertos}</em>
+                    
+                  <img src="../../painel/images/clientes/{$foto}" class="me-3 rounded-circle shadow-l" width="40">
               </div>
-            </div>
-            <div class="splide__slide mx-3">
+                  <div onclick="mostrar('{$id}', '{$nome}','{$telefone}','{$cpf}','{$email}','{$enderecoF2}','{$data_nascF}', '{$data_cadF}', '{$obs}', '{$pix}', '{$indicacao}', '{$bairro}', '{$cidade}', '{$estado}', '{$cep}', '{$total_emprestimos}', '{$total_cobrancas}', '{$pessoa}', '{$total_contas}', '{$nome_sec}', '{$telefone_sec}', '{$endereco_sec}', '{$grupo}', '{$dados_emprestimoF}', '{$comprovante_endereco}', '{$comprovante_rg}', '{$tumb_comprovante_endereco}', '{$tumb_comprovante_rg}', '{$telefone2}', '{$foto}')">
+                  <h5 class="mt-1 mb-0" style="font-size: 13px;"><i class="fa fa-square" style="color:{$cor}; display:{$ocultar_cor}"></i> {$nome}</h5>
+                  <p class="font-12 mt-n2 mb-0 ">{$telefone}</p>
+                  <p class="font-12 mt-n2 mb-0 color-blue-dark"></p>
+                  <p class="font-12 mt-n2 mb-0 color-blue-dark"> <span class="">{$email}</span></p>
+                  <p class="font-12 mt-n2 mb-0">Cadastrado: {$data_cadF}</p>
+                  </div>
+                  <div class="ms-auto"><span class="px-2 py-1 badge mt-4 p-2 font-12 shadow-bg shadow-bg-s" style="background:{$cor}">{$status_cliente}</span></div>
 
-              <div class="d-flex">
-                <div class="ms-auto">
+                  <div class="ms-auto"><span class="badge bg-blue-dark mt-0 p-1 font-8 shadow-bg-s"><i class="fa fa-arrow-right"></i></span></div>
+                </div>
+              </div>
+              <div class="splide__slide mx-3">
 
-                 
-                  <a onclick="editar('{$id}','{$nome}','{$telefone}','{$cpf}','{$email}','{$enderecoF2}','{$data_nascF}', '{$obs}', '{$pix}', '{$indicacao}', '{$bairro}', '{$cidade}', '{$estado}', '{$cep}', '{$pessoa}', '{$nome_sec}', '{$telefone_sec}', '{$endereco_sec}', '{$grupo}', '{$tumb_comprovante_endereco}', '{$tumb_comprovante_rg}', '{$telefone2}', '{$foto}', '{$status_cliente}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-twitter"><i class="fa fa-edit text-white"></i></a>                  
+                <div class="d-flex">
+                  <div class="ms-auto">
 
-                  <a onclick="arquivo('{$id}','{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-cinza"><i
-                      class="fa fa-file text-white"></i></a>
+                  
+                    <a onclick="editar('{$id}','{$nome}','{$telefone}','{$cpf}','{$email}','{$enderecoF2}','{$data_nascF}', '{$obs}', '{$pix}', '{$indicacao}', '{$bairro}', '{$cidade}', '{$estado}', '{$cep}', '{$pessoa}', '{$nome_sec}', '{$telefone_sec}', '{$endereco_sec}', '{$grupo}', '{$tumb_comprovante_endereco}', '{$tumb_comprovante_rg}', '{$telefone2}', '{$foto}', '{$status_cliente}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-twitter"><i class="fa fa-edit text-white"></i></a>                  
 
-                  <a target="_blank" href="http://api.whatsapp.com/send?1=pt_BR&phone={$tel_whatsF}" class="icon icon-xs rounded-circle shadow-l bg-whatsapp"><i class="fa-brands fa-whatsapp text-white"></i></a>
+                    <a onclick="arquivo('{$id}','{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-cinza"><i
+                        class="fa fa-file text-white"></i></a>
 
-                  <a onclick="excluir_reg('{$id}', '{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-google"><i class="bi bi-trash-fill text-white"></i></a>
+                    <a target="_blank" href="http://api.whatsapp.com/send?1=pt_BR&phone={$tel_whatsF}" class="icon icon-xs rounded-circle shadow-l bg-whatsapp"><i class="fa-brands fa-whatsapp text-white"></i></a>
 
-                  <a onclick="emprestimo('{$id}','{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-phone"><i class="bi bi-currency-dollar text-white"></i></a>
+                    <a onclick="excluir_reg('{$id}', '{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-google"><i class="bi bi-trash-fill text-white"></i></a>
 
-                  <a onclick="cobranca('{$id}','{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-phone"><i class="bi bi-credit-card-fill text-white"></i></a>
+                    <a onclick="emprestimo('{$id}','{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-phone"><i class="bi bi-currency-dollar text-white"></i></a>
+
+                    <a onclick="cobranca('{$id}','{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-phone"><i class="bi bi-credit-card-fill text-white"></i></a>
 
 
-                 <a onclick="mostrarContas('{$id}','{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-twitter">
-                  <i class="bi bi-eye text-white"></i>
-                </a>
+                  <a onclick="mostrarContas('{$id}','{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-twitter">
+                    <i class="bi bi-eye text-white"></i>
+                  </a>
 
-                 
+                  
 
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="divider mt-3 mb-3"></div>
-HTML;
-        }
-      } else {
-        echo 'Nenhum Registro Encontrado!';
+        <div class="divider mt-3 mb-3"></div>
+        HTML;
       }
-      ?>
+    } else {
+      echo 'Nenhum Registro Encontrado!';
+    }
+    ?>
 
 
       <!-- PAGINAÇÃO -->
