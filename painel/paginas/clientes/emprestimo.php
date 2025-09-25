@@ -90,6 +90,7 @@ for($i=1; $i <= $parcelas; $i++){
 
 	//calculo dos juros 
 	$valor_sem_juros = $valor_parcela;
+	$obs_receber = $tipo_juros;
 
 	//juros padrão
 	if($tipo_juros == 'Padrão'){
@@ -187,18 +188,19 @@ for($i=1; $i <= $parcelas; $i++){
 	//verificação de feriados
 	require("../../verificar_feriados.php");
 	
-	$pdo->query("INSERT INTO receber SET cliente = '$id', referencia = 'Empréstimo', id_ref = '$ult_id', valor = '$valor_parcela_final', parcela = '$i', usuario_lanc = '$id_usuario', data = curDate(), data_venc = '$novo_vencimento', pago = 'Não', descricao = '$descricao', frequencia = '$frequencia_conta', recorrencia = '$recorrencia_conta', parcela_sem_juros = '$valor_sem_juros' ");
+	$pdo->query("INSERT INTO receber SET cliente = '$id', referencia = 'Empréstimo', id_ref = '$ult_id', valor = '$valor_parcela_final', parcela = '$i', usuario_lanc = '$id_usuario', data = curDate(), data_venc = '$novo_vencimento', pago = 'Não', descricao = '$descricao', frequencia = '$frequencia_conta', recorrencia = '$recorrencia_conta', parcela_sem_juros = '$valor_sem_juros', obs = '$obs_receber' ");
 	$ult_id_conta = $pdo->lastInsertId();
-	$id_conta = $ult_id_conta;
-	require('../../apis/agendar_menuia.php');
+
 }
+
+//atualizar valor da parcela
+$pdo->query("UPDATE emprestimos SET valor_parcela = '$valor_parcela_final' where id = '$ult_id'");
 
 echo 'Salvo com Sucesso';
 
 
-if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 //enviar mensagem para o cliente
-
+if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 	$data_vencF = date('d', strtotime($data_venc));
 	$dataF = implode('/', array_reverse(explode('-', $data_emprestimo_post)));
 	$valorF = number_format($valor, 2, ',', '.');
@@ -244,9 +246,20 @@ if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 
 	require('../../apis/texto.php');
 
+	
 }
 
-//atualizar valor da parcela
-$pdo->query("UPDATE emprestimos SET valor_parcela = '$valor_parcela_final' where id = '$ult_id'");
+//Gerar agendamento para WhatsApp		
+if($token != "" and $instancia != ""){
+	$query_agendar = $pdo->query("SELECT * FROM receber where referencia = 'Empréstimo' and id_ref = '$ult_id'  order by id asc");
+	$res_agendar = $query_agendar->fetchAll(PDO::FETCH_ASSOC);
+	$total_reg_agendar = @count($res_agendar);
+	if($total_reg_agendar > 0){
+		for($i=0; $i < $total_reg_agendar; $i++){
+			$id_conta = $res_agendar[$i]['id'];
+			require('../../apis/agendar_menuia.php');
+		}
+	}	
+}
 
  ?>

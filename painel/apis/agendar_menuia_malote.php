@@ -2,10 +2,7 @@
 require_once __DIR__ . '/../../conexao.php';
 
 // $dados_conta = [341];
-$dados_conta = [363, 362, 361, 232, 322, 342, 323, 343, 394, 324,
-    344, 325, 345, 326, 346, 327, 347, 328, 395, 348,
-    329, 349, 330, 350, 331, 351, 332, 352, 333, 353,
-    334, 354, 335, 355, 336, 356];
+$dados_conta = [395, 348];
 // transforma o array em string separada por vírgula
 $ids_str = implode(',', $dados_conta);
 

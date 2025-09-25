@@ -7,7 +7,7 @@ if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 									INNER JOIN clientes AS c 
 									ON r.cliente = c.id 
 									WHERE r.id = '$id_conta' 
-									AND r.hash2 IS NULL");
+									AND r.hash IS NULL");
 
 	$res = $query->fetchAll(PDO::FETCH_ASSOC);
 	$total_reg = @count($res);
@@ -40,7 +40,7 @@ if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 
 		require('agendar.php');
 		$message = $messageAgendar;
-		$pdo->query("UPDATE receber SET hash2 = '$hash', data_alerta = '$data_alerta', hora_alerta = '$hora_alerta', alerta = 'Sim' where id = '$id_conta' ");
+		$pdo->query("UPDATE receber SET hash = '$hash', data_alerta = '$data_alerta', hora_alerta = '$hora_alerta', alerta = 'Sim' where id = '$id_conta' ");
 	}
 }
 
