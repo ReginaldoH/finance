@@ -184,18 +184,13 @@ for($i=1; $i <= $parcelas; $i++){
 
 		}
 
-		//verificação de feriados
-		require("../../verificar_feriados.php");
-		
-			
-		
-
-
-	$pdo->query("INSERT INTO receber SET cliente = '$id', referencia = 'Empréstimo', id_ref = '$ult_id', valor = '$valor_parcela_final', parcela = '$i', usuario_lanc = '$id_usuario', data = curDate(), data_venc = '$novo_vencimento', pago = 'Não', descricao = '$descricao', frequencia = '$frequencia_conta', recorrencia = '$recorrencia_conta', parcela_sem_juros = '$valor_sem_juros', hora_alerta = '$hora_random' ");
+	//verificação de feriados
+	require("../../verificar_feriados.php");
+	
+	$pdo->query("INSERT INTO receber SET cliente = '$id', referencia = 'Empréstimo', id_ref = '$ult_id', valor = '$valor_parcela_final', parcela = '$i', usuario_lanc = '$id_usuario', data = curDate(), data_venc = '$novo_vencimento', pago = 'Não', descricao = '$descricao', frequencia = '$frequencia_conta', recorrencia = '$recorrencia_conta', parcela_sem_juros = '$valor_sem_juros' ");
 	$ult_id_conta = $pdo->lastInsertId();
-
-
-
+	$id_conta = $ult_id_conta;
+	require('../../apis/agendar_menuia.php');
 }
 
 echo 'Salvo com Sucesso';
@@ -219,10 +214,10 @@ if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 	$mensagem .= '_Novo Empréstimo_ %0A';
 	
 	$mensagem .= 'Cliente: *'.$nome_cliente.'* %0A';
-	// $mensagem .= 'Valor: '.$valorF.' %0A';
+	$mensagem .= 'Valor: '.$valorF.' %0A';
 	// $mensagem .= 'Júros '.$tipo_juros.': '.$juros_emp.''.$pcto.' %0A';
 	if($tipo_juros != "Somente Júros"){
-		$mensagem .= 'Júros pago no final: *'.$valor_total_jurosF.'* %0A';
+		// $mensagem .= 'Júros pago no final: *'.$valor_total_jurosF.'* %0A';
 	}
 
 	$mensagem .= 'Data Empréstimo: *'.$dataF.'* %0A';

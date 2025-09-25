@@ -31,6 +31,8 @@ curl_close($curl);
 
 $responseData = json_decode($response, true);
 $hash = @$responseData['id'];
+$messageAgendar = @$responseData['message'];
+
 }
 
 
@@ -54,6 +56,7 @@ if($seletor_api == 'wm'){
   $result = @file_get_contents($url, false, $stream);
   $res = json_decode($result, true);
   $hash = @$res['message']['hash'];
+  $messageAgendar = @$res['message']['$message'];
   //echo $hash;
   //echo $result;
 }
