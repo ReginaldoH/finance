@@ -46,16 +46,24 @@ $checked_vencidas = '';
 $checked_pagas = '';
 $checked_pendentes = '';
 $checked_todas = '';
+  $pago = @$_POST['pago'];
 if (@$_POST['pago'] == "Vencidas") {
   $checked_vencidas = 'true';
 } else if (@$_POST['pago'] == "Sim") {
   $checked_pagas = 'true';
 } else if (@$_POST['pago'] == "Não") {
   $checked_pendentes = 'true';
-} else {
+} else if (@$_POST['pago'] == "Todas") {
   $checked_todas = 'true';
+  $pago = '';
+}else{
+  $checked_pendentes = 'true';
+  $pago = 'Não';
 }
-
+echo('<pre>');
+print_r($pago);
+echo('</pre>');
+// exit;
 if ($dataInicial == "") {
   $dataInicial = $data_inicial;
 }
@@ -117,8 +125,6 @@ if ($pag_proxima == $num_paginas) {
       <div class="content">
         <div class="tabs tabs-pill" id="tab-group-2">
           <div class="tab-controls rounded-m p-1">
-            <a class="font-12 rounded-m tabradio" data-bs-toggle="collapse" href="#tab-4"
-            aria-expanded="<?php echo $checked_todas ?>" name="tabs" id="tabone" onclick="buscar('')">Todas</a>
             <a class="font-12 rounded-m tabradio" data-bs-toggle="collapse" href="#tab-x"
             aria-expanded="<?php echo $checked_pendentes ?>" name="tabs" id="tabthree"
             onclick="buscar('Não')">Pedentes</a>
@@ -127,6 +133,8 @@ if ($pag_proxima == $num_paginas) {
             onclick="buscar('Vencidas')">Vencidas</a>
             <a class="font-12 rounded-m tabradio" data-bs-toggle="collapse" href="#tab-5"
             aria-expanded="<?php echo $checked_pagas ?>" name="tabs" id="tabtwo" onclick="buscar('Sim')">Pagas</a>
+            <a class="font-12 rounded-m tabradio" data-bs-toggle="collapse" href="#tab-4"
+            aria-expanded="<?php echo $checked_todas ?>" name="tabs" id="tabone" onclick="buscar('Todas')">Todas</a>
           </div>
           <div class="mt-3"></div>
           <div class="collapse show tab ocultar" id="tab-4" data-bs-parent="#tab-group-2">
