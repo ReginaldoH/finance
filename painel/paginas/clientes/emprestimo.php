@@ -212,10 +212,13 @@ if($token != "" and $instancia != "" and $enviar_whatsapp == 'Sim'){
 		$pcto = 'PCento';
 	}
 
-	$mensagem = '💰 *' . $nome_sistema .$contato. '*%0A';
+	$mensagem = '💰 *' . $nome_sistema . '*%0A';
 	$mensagem .= '_Novo Empréstimo_ %0A';
 	
 	$mensagem .= 'Cliente: *'.$nome_cliente.'* %0A';
+	if ( strlen($_POST['contato']) > 0) {
+		$mensagem .= 'Contato: *'.$_POST['contato'].'* %0A';
+	}
 	$mensagem .= 'Valor: '.$valorF.' %0A';
 	// $mensagem .= 'Júros '.$tipo_juros.': '.$juros_emp.''.$pcto.' %0A';
 	if($tipo_juros != "Somente Júros"){
