@@ -11,7 +11,7 @@ if($status == ""){
 	$sql_status = " where status_cliente = '$status' ";
 }
 
-$query = $pdo->query("SELECT * from $tabela $sql_status order by id desc");
+$query = $pdo->query("SELECT * from $tabela $sql_status order by favorito ASC, nome ASC");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $linhas = @count($res);
 

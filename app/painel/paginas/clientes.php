@@ -44,7 +44,7 @@ if($status_busca != ""){
 
 
 //totalizar páginas
-$query2 = $pdo->query("SELECT id from $pag  where (nome like '%$buscar%' or telefone like '%$buscar%' or email like '%$buscar%' or cpf like '%$buscar%') $sql_status order by nome asc");
+$query2 = $pdo->query("SELECT id from $pag  where (nome like '%$buscar%' or telefone like '%$buscar%' or email like '%$buscar%' or cpf like '%$buscar%') $sql_status order by favorito ASC, nome ASC");
 $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
 $linhas2 = @count($res2);
 
@@ -171,7 +171,7 @@ if ($pag_proxima == $num_paginas) {
                     $sql_status
                     $sql_filtro_ativo
                     GROUP BY c.id
-                    ORDER BY c.nome ASC
+                    ORDER BY c.favorito ASC, c.nome ASC
                     LIMIT $limite, $itens_pag ");
 
       $res = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -213,6 +213,7 @@ if ($pag_proxima == $num_paginas) {
         $telefone2 = @$res[$i]['telefone2'];
         $foto = @$res[$i]['foto'];
         $status_cliente = @$res[$i]['status_cliente'];
+        $juros_emp_cliente = @$res[$i]['juros_emp_cliente'];
 
         $dados_emprestimoF = @rawurlencode($dados_emprestimo);
 
@@ -332,7 +333,7 @@ if ($pag_proxima == $num_paginas) {
                   <div class="ms-auto">
 
                   
-                    <a onclick="editar('{$id}','{$nome}','{$telefone}','{$cpf}','{$email}','{$enderecoF2}','{$data_nascF}', '{$obs}', '{$pix}', '{$indicacao}', '{$bairro}', '{$cidade}', '{$estado}', '{$cep}', '{$pessoa}', '{$nome_sec}', '{$telefone_sec}', '{$endereco_sec}', '{$grupo}', '{$tumb_comprovante_endereco}', '{$tumb_comprovante_rg}', '{$telefone2}', '{$foto}', '{$status_cliente}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-twitter"><i class="fa fa-edit text-white"></i></a>                  
+                    <a onclick="editar('{$id}','{$nome}','{$telefone}','{$cpf}','{$email}','{$enderecoF2}','{$data_nascF}', '{$obs}', '{$pix}', '{$indicacao}', '{$bairro}', '{$cidade}', '{$estado}', '{$cep}', '{$pessoa}', '{$nome_sec}', '{$telefone_sec}', '{$endereco_sec}', '{$grupo}', '{$tumb_comprovante_endereco}', '{$tumb_comprovante_rg}', '{$telefone2}', '{$foto}', '{$status_cliente}', '{$juros_emp_cliente}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-twitter"><i class="fa fa-edit text-white"></i></a>                  
 
                     <a onclick="arquivo('{$id}','{$nome}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-cinza"><i
                         class="fa fa-file text-white"></i></a>
@@ -477,6 +478,11 @@ if ($pag_proxima == $num_paginas) {
   <label class="color-theme ps-5">Status Cliente</label>
 </div>
 
+<div class="form-floating mb-3 position-relative">
+  <i class="bi bi-percent position-absolute start-0 top-50 translate-middle-y ms-3"></i>
+  <input type="number" class="form-control rounded-xs ps-5" id="juros_emp_cliente" name="juros_emp_cliente" placeholder="" value="20">
+  <label class="color-theme ps-5">Juros Empresimo %</label>
+</div>
 
 <!-- Telefone -->
 <div class="form-floating mb-3 position-relative">
@@ -676,9 +682,12 @@ if ($pag_proxima == $num_paginas) {
     </div>
     <input type="file" name="foto" id="foto" style="display:none" onchange="carregarImg();">
   </div>
+  <div class="col-6 col-md-4">
+
+  </div>
   
   <!-- Enviar WhatsApp -->
-    <div class="col-12">
+    <div class="col-6">
       <div class="form-floating position-relative">
         <i class="bi bi-whatsapp position-absolute start-0 top-50 translate-middle-y ms-3"></i>
         <select name="enviar_whatsapp" id="enviar_whatsapp_emp" class="form-select rounded-xs ps-5">  
@@ -1893,36 +1902,37 @@ if ($pag_proxima == $num_paginas) {
 
 
 <script>
-  function editar(id, nome, telefone, cpf, email, endereco, data_nasc, obs, pix, indicacao, bairro, cidade, estado, cep, pessoa, nome_sec, telefone_sec, endereco_sec, grupo, comprovante_endereco, comprovante_rg, telefone2, foto, status_cliente) {
+  function editar(id, nome, telefone, cpf, email, endereco, data_nasc, obs, pix, indicacao, bairro, cidade, estado, cep, pessoa, nome_sec, telefone_sec, endereco_sec, grupo, comprovante_endereco, comprovante_rg, telefone2, foto, status_cliente, juros_emp_cliente) {
     $('#mensagem').text('');
     $('#titulo_inserir').text('EDITAR REGISTRO CLIENTES');
 
     $('#id').val(id);
-      $('#nome').val(nome);
-      $('#email').val(email);
-      $('#telefone').val(telefone);
-      $('#endereco').val(decodeURIComponent(endereco));
-      $('#cpf').val(cpf);
-      $('#data_nasc').val(data_nasc);
-      $('#obs').val(obs);
-      $('#pix').val(pix);
-      $('#indicacao').val(indicacao);
-      $('#bairro').val(bairro);
-      $('#cidade').val(cidade);
-      $('#estado').val(estado).change();
-      $('#pessoa').val(pessoa).change();
-      $('#cep').val(cep);
+    $('#nome').val(nome);
+    $('#email').val(email);
+    $('#telefone').val(telefone);
+    $('#endereco').val(decodeURIComponent(endereco));
+    $('#cpf').val(cpf);
+    $('#data_nasc').val(data_nasc);
+    $('#obs').val(obs);
+    $('#pix').val(pix);
+    $('#indicacao').val(indicacao);
+    $('#bairro').val(bairro);
+    $('#cidade').val(cidade);
+    $('#estado').val(estado).change();
+    $('#pessoa').val(pessoa).change();
+    $('#cep').val(cep);
+    
+    $('#nome_sec').val(nome_sec);
+    $('#telefone_sec').val(telefone_sec);
+    $('#endereco_sec').val(endereco_sec);
+    $('#grupo').val(grupo);
+    $('#telefone2').val(telefone2);
+    $('#status_cliente').val(status_cliente).change();
+    $('#juros_emp_cliente').val(juros_emp_cliente);
 
-      $('#nome_sec').val(nome_sec);
-      $('#telefone_sec').val(telefone_sec);
-      $('#endereco_sec').val(endereco_sec);
-      $('#grupo').val(grupo);
-      $('#telefone2').val(telefone2);
-      $('#status_cliente').val(status_cliente).change();
-
-      $('#target-comprovante-endereco').attr('src','../../painel/images/comprovantes/'+comprovante_endereco);
-      $('#target-comprovante-rg').attr('src','../../painel/images/comprovantes/'+comprovante_rg);
-      $('#target').attr('src','../../painel/images/clientes/'+foto);
+    $('#target-comprovante-endereco').attr('src','../../painel/images/comprovantes/'+comprovante_endereco);
+    $('#target-comprovante-rg').attr('src','../../painel/images/comprovantes/'+comprovante_rg);
+    $('#target').attr('src','../../painel/images/clientes/'+foto);
 
     $('#btn_novo_editar').click();
   }
@@ -1931,7 +1941,7 @@ if ($pag_proxima == $num_paginas) {
 
 
 <script type="text/javascript">
-  function mostrar(id, nome, telefone, cpf, email, endereco, data_nasc, data_cad, obs, pix, indicacao, bairro, cidade, estado, cep, total_emprestimos, total_cobrancas, pessoa, total_contas, nome_sec, telefone_sec, endereco_sec, grupo, dados_emprestimo, comprovante_endereco, comprovante_rg, tumb_comprovante_endereco, tumb_comprovante_rg, telefone2, foto) {
+  function mostrar(id, nome, telefone, cpf, email, endereco, data_nasc, data_cad, obs, pix, indicacao, bairro, cidade, estado, cep, total_emprestimos, total_cobrancas, pessoa, total_contas, nome_sec, telefone_sec, endereco_sec, grupo, dados_emprestimo, comprovante_endereco, comprovante_rg, tumb_comprovante_endereco, tumb_comprovante_rg, telefone2, foto, juros_emp_cliente) {
     const botao = document.getElementById('btn_mostrar');
     
     $('#dados_emprestimos_dados2').text(decodeURIComponent(dados_emprestimo));

@@ -28,6 +28,10 @@ $dados_emprestimo = @$_POST['dados_emprestimo'];
 $cliente_cadastro = @$_POST['cliente_cadastro'];
 $telefone2 = @$_POST['telefone2'];
 $status_cliente = @$_POST['status_cliente'];
+$juros_emp_cliente = isset($_POST['juros_emp_cliente']) && $_POST['juros_emp_cliente'] !== ''
+    ? $_POST['juros_emp_cliente']
+    : 20;
+
 $enviar_whatsapp = @$_POST['enviar_whatsapp'];
 
 $senha = @$_POST['senha'];
@@ -283,12 +287,12 @@ if (@$_FILES['foto']['name'] != "") {
 
 
 if($id == ""){
-$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, telefone = :telefone, data_cad = curDate(), endereco = :endereco, data_nasc = '$data_nasc', obs = :obs, pix = :pix, indicacao = :indicacao, bairro = :bairro, estado = :estado, cidade = :cidade, cep = :cep, pessoa = :pessoa, nome_sec = :nome_sec, telefone_sec = :telefone_sec, endereco_sec = :endereco_sec, grupo = :grupo, status = :status, comprovante_endereco = '$comprovante_endereco', comprovante_rg = '$comprovante_rg', dados_emprestimo = :dados_emprestimo, telefone2 = :telefone2, foto = '$foto', status_cliente = '$status_cliente', senha_crip = '$senha_crip' ");
+$query = $pdo->prepare("INSERT INTO $tabela SET nome = :nome, email = :email, cpf = :cpf, telefone = :telefone, data_cad = curDate(), endereco = :endereco, data_nasc = '$data_nasc', obs = :obs, pix = :pix, indicacao = :indicacao, bairro = :bairro, estado = :estado, cidade = :cidade, cep = :cep, pessoa = :pessoa, nome_sec = :nome_sec, telefone_sec = :telefone_sec, endereco_sec = :endereco_sec, grupo = :grupo, status = :status, comprovante_endereco = '$comprovante_endereco', comprovante_rg = '$comprovante_rg', dados_emprestimo = :dados_emprestimo, telefone2 = :telefone2, foto = '$foto', status_cliente = '$status_cliente', juros_emp_cliente = :juros_emp_cliente, senha_crip = '$senha_crip' ");
 
 $query->bindValue(":dados_emprestimo", "$dados_emprestimo");
 	
 }else{
-$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, email = :email, cpf = :cpf, telefone = :telefone, endereco = :endereco, data_nasc = '$data_nasc', obs = :obs, pix = :pix, indicacao = :indicacao, bairro = :bairro, estado = :estado, cidade = :cidade, cep = :cep, pessoa = :pessoa, nome_sec = :nome_sec, telefone_sec = :telefone_sec, endereco_sec = :endereco_sec, grupo = :grupo, status = :status, comprovante_endereco = '$comprovante_endereco', comprovante_rg = '$comprovante_rg', telefone2 = :telefone2, foto = '$foto', status_cliente = '$status_cliente' where id = '$id'");
+$query = $pdo->prepare("UPDATE $tabela SET nome = :nome, email = :email, cpf = :cpf, telefone = :telefone, endereco = :endereco, data_nasc = '$data_nasc', obs = :obs, pix = :pix, indicacao = :indicacao, bairro = :bairro, estado = :estado, cidade = :cidade, cep = :cep, pessoa = :pessoa, nome_sec = :nome_sec, telefone_sec = :telefone_sec, endereco_sec = :endereco_sec, grupo = :grupo, status = :status, comprovante_endereco = '$comprovante_endereco', comprovante_rg = '$comprovante_rg', telefone2 = :telefone2, foto = '$foto', status_cliente = '$status_cliente', juros_emp_cliente = :juros_emp_cliente where id = '$id'");
 }
 $query->bindValue(":nome", "$nome");
 $query->bindValue(":email", "$email");
@@ -310,6 +314,7 @@ $query->bindValue(":endereco_sec", "$endereco_sec");
 $query->bindValue(":grupo", "$grupo");
 $query->bindValue(":status", "$status");
 $query->bindValue(":telefone2", "$telefone2");
+$query->bindValue(":juros_emp_cliente", "$juros_emp_cliente");
 $query->execute();
 
 echo 'Salvo com Sucesso';
