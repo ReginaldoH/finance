@@ -949,7 +949,7 @@ if ($pag_proxima == $num_paginas) {
     </div>
 
     <!-- Frequência -->
-    <div class="col-12">
+    <div class="col-6">
       <div class="form-floating position-relative">
         <i class="bi bi-arrow-repeat position-absolute start-0 top-50 translate-middle-y ms-3"></i>
 
@@ -968,7 +968,7 @@ if ($pag_proxima == $num_paginas) {
     </div>
 
     <!-- Tipo de Juros -->
-    <div class="col-12">
+    <div class="col-6">
       <div class="form-floating position-relative">
         <i class="bi bi-bar-chart-line-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
         <select class="form-select rounded-xs ps-5" name="tipo_juros" id="tipo_juros">
@@ -983,19 +983,6 @@ if ($pag_proxima == $num_paginas) {
         <label class="color-theme ps-5">Tipo de Juros</label>
       </div>
     </div>
-
-    <!-- Enviar WhatsApp -->
-    <div class="col-12">
-      <div class="form-floating position-relative">
-        <i class="bi bi-whatsapp position-absolute start-0 top-50 translate-middle-y ms-3"></i>
-        <select name="enviar_whatsapp" id="enviar_whatsapp_emp" class="form-select rounded-xs ps-5">  
-          <option value="Sim">Sim</option>
-          <option value="Não">Não</option>
-        </select>
-        <label class="color-theme ps-5">Enviar WhatsApp</label>
-      </div>
-    </div>
-
     <!-- Observações -->
     <div class="col-12">
       <div class="form-floating position-relative">
@@ -1013,6 +1000,17 @@ if ($pag_proxima == $num_paginas) {
       </div>
     </div>
 
+    <!-- Enviar WhatsApp -->
+    <div class="col-12">
+      <div class="form-floating position-relative">
+        <i class="bi bi-whatsapp position-absolute start-0 top-50 translate-middle-y ms-3"></i>
+        <select name="enviar_whatsapp" id="enviar_whatsapp_emp" class="form-select rounded-xs ps-5">  
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+        <label class="color-theme ps-5">Enviar WhatsApp</label>
+      </div>
+    </div>
 
     <input type="hidden" class="form-control" id="id_emp" name="id">
     <input type="hidden" class="form-control" id="nome_emprest" name="nome">
@@ -1028,7 +1026,11 @@ if ($pag_proxima == $num_paginas) {
 
 
 </form>
-
+    <div class="col-12 mt-3">
+      <a href="paginas/simular_emprestimo.php" id="btn_simular_emprestimo" type="submit" class="btn btn-info w-100 rounded-pill">
+        <i class="bi bi-signpost-split-fill me-2"></i>Simular Empréstimo
+        </a>
+    </div>
   </div>
 </div>
 

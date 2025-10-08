@@ -90,7 +90,7 @@ if ($linhas > 0) {
       <a class="<?php echo @$emprestimos ?>" href="emprestimos" id="nav-comps" onclick="navigateToPage(event, 'emprestimos')"><i
           class="gradient-green rounded-s bg-teal-dark bi bi-currency-dollar"></i>
           <span>Empréstimos</span>
-        <i class="bi bi-chevron-right"></i>
+        <!-- <i class="bi bi-chevron-right"></i> -->
       </a>
     </span>
   <?php } ?>
@@ -101,7 +101,7 @@ if ($linhas > 0) {
       <a class="<?php echo @$cobrancas ?>" href="cobrancas" id="nav-comps" onclick="navigateToPage(event, 'cobrancas')"><i
           class="gradient-blue rounded-s bg-teal-dark bi bi-cash"></i>
           <span>Cobranças</span>
-        <i class="bi bi-chevron-right"></i>
+        <!-- <i class="bi bi-chevron-right"></i> -->
       </a>
     </span>
   <?php } ?>
@@ -110,7 +110,14 @@ if ($linhas > 0) {
       <a class="<?php echo @$calendario ?>" href="calendario" id="nav-comps" onclick="navigateToPage(event, 'calendario')"><i
           class="gradient-orange rounded-s bg-teal-dark bi bi-calendar"></i>
           <span>Calendário</span>
-        <i class="bi bi-chevron-right"></i>
+        <!-- <i class="bi bi-chevron-right"></i> -->
+      </a>
+    </span>
+    <span >
+      <a class="<?php echo @$simular_emprestimo ?>" href="simular_emprestimo" id="nav-comps" onclick="navigateToPage(event, 'simular_emprestimo')"><i
+          class="gradient-green rounded-s bg-teal-dark bi bi-signpost-split-fill"></i>
+          <span>Simular Emprestimo</span>
+        <!-- <i class="bi bi-chevron-right"></i> -->
       </a>
     </span>
     
@@ -238,7 +245,7 @@ if ($linhas > 0) {
     <span class="<?php echo @$solicitar_emprestimo ?>">
       <a href="solicitar_emprestimo" id="nav-comps" onclick="navigateToPage(event, 'solicitar_emprestimo')">
         <i class="gradient-magenta rounded-s bg-orange-dark fa-solid fa-list-check"></i><span>Solicitações Empréstimos</span>
-        <i class="bi bi-chevron-right"></i>
+        <!-- <i class="bi bi-chevron-right"></i> -->
       </a>
     </span>
   <?php } ?>
@@ -247,7 +254,7 @@ if ($linhas > 0) {
       <a class="<?php echo @$gestao_mensagens ?>" href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-gestao" >
           <i class="gradient-teal rounded-s bg-teal-dark bi bi-whatsapp"></i>
           <span>Gestão de Mensagens</span>
-        <i class="bi bi-chevron-right"></i>
+        <!-- <i class="bi bi-chevron-right"></i> -->
       </a>
     </span>
 
