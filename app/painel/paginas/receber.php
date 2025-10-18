@@ -60,10 +60,7 @@ if (@$_POST['pago'] == "Vencidas") {
   $checked_pendentes = 'true';
   $pago = 'Não';
 }
-echo('<pre>');
-print_r($pago);
-echo('</pre>');
-// exit;
+
 if ($dataInicial == "") {
   $dataInicial = $data_inicial;
 }
@@ -162,7 +159,7 @@ if ($pag_proxima == $num_paginas) {
           <select class="sel_nulo rounded-xs ps-5 pe-5" name="cliente_busca" id="cliente_busca" onchange="$('#btn_filtrar').click()" style="width:100%;">
             <option value="" data-cor="">Selecionar Cliente</option>
             <?php 
-              $query = $pdo->query("SELECT * from clientes order by nome asc");
+              $query = $pdo->query("SELECT * from clientes order by favorito ASC, nome ASC");
               $res = $query->fetchAll(PDO::FETCH_ASSOC);
               $linhas = @count($res);
               if($linhas > 0){
@@ -337,14 +334,13 @@ $valor_finalF = @number_format($valor_final, 2, ',', '.');
           <div class="ms-auto">
             <a onclick="editar('{$id}','{$descricao}','{$valor_finalF}','{$data_venc}','{$obs}','{$cliente}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-twitter"><i class="fa fa-edit text-white"></i></a>
            
-            <a onclick="mensagem_w_receber('{$id}', '{$descricao}', '{$valor}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-green"><i class="bi bi-whatsapp text-white"></i></a>
-            
             <a onclick="baixarConta('{$id}', '{$descricao}', '{$valor}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-success"><i class="bi bi-check-square-fill text-white"></i></a>
-
+            
             <a onclick="arquivo('{$id}', '{$descricao}')" href="#" class="icon icon-xs rounded-circle shadow-l bg-dark"><i class="fa fa-file text-white"></i></a>
-
+            
             <a onclick="excluir_reg('{$id}', '{$descricao}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-google"><i class="bi bi-trash-fill text-white"></i></a>
-           
+            
+            <a onclick="mensagem_w_receber('{$id}', '{$descricao}', '{$valor}')" href="#" class="{$ocultar} icon icon-xs rounded-circle shadow-l bg-green"><i class="bi bi-whatsapp text-white"></i></a>
 
           </div>
         </div>

@@ -1,3 +1,6 @@
+//Para iniciar o servidor:
+docker compose up -d
+
 Adicinar campos:
 ALTER TABLE `clientes` ADD `juros_emp_cliente` INT(11) NOT NULL DEFAULT '20' AFTER `api_pgto`;
 ALTER TABLE `clientes` ADD `favorito` INT(1) NOT NULL DEFAULT '5' AFTER `nome`;

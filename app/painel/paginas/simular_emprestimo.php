@@ -167,7 +167,7 @@ h2 {
       <div class="col-6">
         <div class="form-floating position-relative">
           <i class="bi bi-percent position-absolute start-0 top-50 translate-middle-y ms-3"></i>
-          <input disabled type="number" class="form-control rounded-xs ps-5" id="juros" name="juros" placeholder="Juros Final %" required value="20" onchange="calcular()">
+          <input type="number" class="form-control rounded-xs ps-5" id="juros" name="juros" placeholder="Juros Final %" required value="20" onchange="calcular()">
           <label class="color-theme ps-5">Juros Final %</label>
         </div>
       </div>
@@ -176,16 +176,16 @@ h2 {
       <div class="col-6">
         <div class="form-floating position-relative">
           <i class="bi bi-bar-chart-line-fill position-absolute start-0 top-50 translate-middle-y ms-3"></i>
-        <select disabled class="form-select rounded-xs ps-5" name="tipo" id="tipo" onchange="calcular()">
-          <option disabled value="Padrão">Juros Padrão (Básico)</option>
+        <select class="form-select rounded-xs ps-5" name="tipo" id="tipo" onchange="calcular()">
+          <!-- <option disabled value="Padrão">Juros Padrão (Básico)</option>
           <option disabled value="Simples">Juros Simples (Price JS)</option>
-          <option disabled value="Composto_Price">Juros Composto Banco</option>
-          <option disabled value="Composto">Juros Composto Comum</option>
+          <option disabled value="Composto_Price">Juros Composto Banco</option> -->
+          <option value="Composto">Juros Composto Comum</option>
           <option value="Prefixado">Juros Prefixados</option>
           <option value="Somente Júros">Somente Juros</option>
           <option value="Sem Júros">Sem Juros</option>
         </select>
-          <label class="color-theme ps-5">Tipo de Cálculo</label>
+          <label class="color-theme ps-5">Tipo Cálculo</label>
         </div>
       </div>
 

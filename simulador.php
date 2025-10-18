@@ -172,6 +172,14 @@
       </div>
     </div>
 
+    <!-- <div class="form-group">
+      <label for="valor" id="parcelasExibido">Parcela <b>( 1 ) </b> </label>
+      <input type="hidden" id="parcelas" value="1" onchange="calcular()">
+      <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+        <input type="range" id="valorRange" min="1" max="4" value="1" step="1"
+               oninput="atualizarParcelas(this.value)" class="range-rs">
+      </div>
+    </div> -->
     <div class="form-group">
       <label for="parcelas">Parcelas</label>
       <select id="parcelas" onchange="calcular()">
@@ -257,6 +265,12 @@ function valorToBr(valor) {
 function atualizarValor(valor) {
   document.getElementById('valor').value = valor;
   document.getElementById('valorExibido').innerHTML = "Valor do Empréstimo <b>R$ " + valorToBr(valor) + "</b>";
+  calcular();
+}
+
+function atualizarParcelas(parcelas) {
+  document.getElementById('parcelas').value = parcelas;
+  document.getElementById('parcelasExibido').innerHTML = "Parcela <b> ( " + (parcelas) + " )</b>";
   calcular();
 }
 
