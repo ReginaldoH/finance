@@ -1,5 +1,6 @@
 //Para iniciar o servidor:
 docker compose up -d
+http://localhost:2001
 
 Adicinar campos:
 ALTER TABLE `clientes` ADD `juros_emp_cliente` INT(11) NOT NULL DEFAULT '20' AFTER `api_pgto`;
