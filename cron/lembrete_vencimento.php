@@ -55,8 +55,8 @@ $telefone_envio = '55' . preg_replace('/[ ()-]+/', '', $telefone_cliente);
 $link_pgto = $url_sistema.'pagar/'.$id;
 $valorF = @number_format($valor, 2, ',', '.');
 
-$mensagem = '*✅💰LEMBRETE DE PAGAMENTO* %0A';
-$mensagem .= @mb_strtoupper($nome_sistema).' %0A%0A';
+$mensagem = '*💰'.($nome_sistema).'* %0A';
+$mensagem .= '*📌LEMBRETE DE PAGAMENTO* %0A%0A';
 
 
 if($parcela > 0){

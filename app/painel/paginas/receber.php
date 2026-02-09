@@ -211,11 +211,15 @@ if ($pag_proxima == $num_paginas) {
   $id_ref = $res[$i]['id_ref'];
   $pago = $res[$i]['pago'];
   $obs = $res[$i]['obs'];
-   $cliente = $res[$i]['cliente'];
+  $obsF = '';
+  if ( !$obs == '') {
+    $obsF = ' - Obs.: ' . $obs; 
+  }
+  $cliente = $res[$i]['cliente'];
 
    $query2 = $pdo->query("SELECT * from clientes where id = '$cliente'");
-$res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
-$nome_cliente = @$res2[0]['nome'];
+  $res2 = $query2->fetchAll(PDO::FETCH_ASSOC);
+  $nome_cliente = @$res2[0]['nome'];
 
 
 $query2 = $pdo->query("SELECT * from usuarios where id = '$usuario_lanc'");
@@ -318,8 +322,7 @@ $valor_finalF = @number_format($valor_final, 2, ',', '.');
             
             <h5 class="mt-0 mb-1" style="font-size: 12px;"><img src="images/{$classe_pago}" width="12px" style="float:left; margin-right: 2px; margin-top: 3px">{$descricaoF}</h5>
             <p class="font-10 mt-n2 {$classe_venc} mb-0">R$ {$valor_finalF}  </p>
-            <p class="font-10 mt-n2 mb-n2">Venc: {$data_vencF}</p>
-
+            <p class="font-10 mt-n2 mb-n2">Venc: {$data_vencF} {$obsF}</p>            
           </div>
           <div class="ms-auto"><span class="slider-next "><span class="badge px-2 py-1 {$cor_venc} shadow-bg shadow-bg-s">{$txt_venc}</span></span>
           </div>

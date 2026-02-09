@@ -45,15 +45,16 @@ $dataF = implode('/', array_reverse(@explode('-', $data)));
 if(strtotime($data) < strtotime($data_atual)){
 	$titulo_mensagem = '❗ATENÇÃO❗%0A ⚠️ *CONSTA EM ATRASO* ⚠️ %0A';
 }else{
-	$titulo_mensagem = '*✅💰LEMBRETE DE PAGAMENTO* %0A';
+	$titulo_mensagem = '*📌LEMBRETE DE PAGAMENTO* %0A%0A';
 }
 
 $link_pgto = $url_sistema.'pagar/'.$id_conta;
 
 
 //mensagem da cobrança
-$mensagem = $titulo_mensagem;
-$mensagem .= @mb_strtoupper($nome_sistema).' %0A%0A';
+$mensagem = '*💰'.($nome_sistema).'* %0A';
+$mensagem .= '--------------------------------%0A';
+$mensagem .= $titulo_mensagem;
 
 if(strtotime($data) < strtotime($data_atual)){	
 	$mensagem .= '❌ *PARCELA VENCIDA* ❌ %0A';
